@@ -1,0 +1,3 @@
+Gotta keep this guy here since it's necessary to run the Starbase with neovim.
+
+A simple `ln -s starbase lua/starbase` should be enough to get up and running
