@@ -60,6 +60,4 @@ function Packer.flatten(self)
   return pdep
 end
 
-
-
 return Packer

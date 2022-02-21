@@ -2,7 +2,9 @@ Provider = {}
 Provider.__index = Provider
 
 function Provider.new()
-  return setmetatable({}, Provider)
+  return setmetatable({
+    is_running_vim = (vim ~= nil),
+  }, Provider)
 end
 
 function Provider.codec(self, nvim)
@@ -22,14 +24,17 @@ function Provider.mapper(self, nvim)
 end
 
 function Provider.nvim(self)
-  if vim ~= nil then
+  if self.is_running_vim then
     return vim 
   end
   return require('starbase.dummy.nvim')
 end
 
 function Provider.plugin_manager(self, nvim)
-  return require('starbase.plugin.Packer').new(nvim)
+  if self.is_running_vim then
+    return require('starbase.plugin.Packer').new(nvim)
+  end
+  return require('starbase.dummy.PluginManager').new()
 end
 
 function Provider.settings_builder(self)
