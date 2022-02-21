@@ -13,6 +13,10 @@ function Provider.file_system(self, nvim)
   return require('starbase.file.NvimFileSystem').new(nvim)
 end
 
+function Provider.filetree(self, plugin_manager, mapper)
+  return require('starbase.aspects.NERDTree').new(plugin_manager, mapper)
+end
+
 function Provider.mapper(self, nvim)
   return require('starbase.map.NvimMapper').new(nvim)
 end
@@ -22,6 +26,10 @@ function Provider.nvim(self)
     return vim 
   end
   return require('starbase.dummy.nvim')
+end
+
+function Provider.plugin_manager(self, nvim)
+  return require('starbase.plugin.Packer').new(nvim)
 end
 
 function Provider.settings_builder(self)

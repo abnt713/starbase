@@ -1,2 +1,5 @@
 lua/*
-!lua/.gitkeep
+plugin/*
+starbase/local/*
+
+!.gitkeep

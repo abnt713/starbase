@@ -20,7 +20,7 @@ function NvimMapper.map(self, keys_combo, cmd, description, mode, opts)
   end
   local map_mode = mode or 'n'
   local options = {noremap = true}
-  if opts then options = vim.tbl_extend('force', options, opts) end
+  if opts then options = self.nvim.tbl_extend('force', options, opts) end
   self.nvim.api.nvim_set_keymap(map_mode, keys_combo, mapped_cmd, options)
   self:add_description(keys_combo, mapped_cmd, description, map_mode)
 end

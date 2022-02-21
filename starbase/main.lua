@@ -17,11 +17,15 @@ return function()
     codec
   )
 
+  local plugin_manager = provider:plugin_manager(nvim)
   local mapper = provider:mapper(nvim)
   local editor_aspect = provider:editor_aspect(nvim, mapper)
+  local filetree = provider:filetree(plugin_manager, mapper)
 
   local base = require('starbase.app.Starbase').new(
-    editor_aspect
+    plugin_manager,
+    editor_aspect,
+    filetree
   )
   base:init()
 end
