@@ -14,9 +14,10 @@ end
 function Provider.starbase(self)
   return self:provide('starbase', function()
     return require('starbase.app.Starbase').new(
-      self:plugin_manager(),
       self:editor_aspect(),
-      self:filetree()
+      self:filetree(),
+      self:plugin_manager(),
+      self:treesitter()
     )
   end)
 end
@@ -89,6 +90,14 @@ function Provider.theme(self)
       self:nvim(),
       self:plugin_manager(),
       self:statusline()
+    )
+  end)
+end
+
+function Provider.treesitter(self)
+  return self:provide('treesitter', function() 
+    return require('starbase.treesitter.Treesitter').new(
+      self:plugin_manager()
     )
   end)
 end
