@@ -1,20 +1,20 @@
-ProjectSettings = {}
-ProjectSettings.__index = ProjectSettings
+Project = {}
+Project.__index = Project
 
-function ProjectSettings.new(settings_file, builder, fs, codec)
+function Project.new(codec, fs, settings_file)
   proj_settings = setmetatable({
-    settings_file = settings_file,
-    builder = builder,
-    fs = fs,
     codec = codec,
+    fs = fs,
+    settings_file = settings_file,
+
     settings = {},
-  }, ProjectSettings)
+  }, Project)
 
   proj_settings:parse()
   return proj_settings
 end
 
-function ProjectSettings.parse(self)
+function Project.parse(self)
   local project_file_name = self.fs:path_from_cwd(self.settings_file)
   if not self.fs:exists(project_file_name) then
     return
@@ -36,12 +36,16 @@ function ProjectSettings.parse(self)
   end
 end
 
-function ProjectSettings.settings_exists(self, project_type)
-  return self.settings[project_type] ~= nil
+function Project.get(self, setting)
+  local value = self.contents
+  local setting_value = nil
+
+  for setting_value in string.gmatch(setting, '(%w+)') do 
+    if type(value) ~= 'table' then return nil end
+    value = value[setting_value]
+  end
+
+  return value
 end
 
-function ProjectSettings.settings_for(self, project_type)
-  return self.settings[project_type]
-end
-
-return ProjectSettings
+return Project

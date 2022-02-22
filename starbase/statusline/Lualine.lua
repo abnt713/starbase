@@ -18,7 +18,7 @@ function Lualine.set_theme(self, theme, supported)
   end
 end
 
-function Lualine.load(self)
+function Lualine.configure(self)
   local lualine_dep = self.plugin_manager:add_dependency(
     'hoob3rt/lualine.nvim',
     self:setup_lualine()

@@ -14,10 +14,16 @@ end
 function Provider.starbase(self)
   return self:provide('starbase', function()
     return require('starbase.app.Starbase').new(
-      self:editor_aspect(),
-      self:filetree(),
-      self:plugin_manager(),
-      self:treesitter()
+      {
+        self:editor(),
+        self:theme(),
+        self:statusline(),
+
+        self:filetree(),
+        self:lsp(),
+        self:treesitter(),
+      },
+      self:plugin_manager()
     )
   end)
 end
@@ -25,6 +31,14 @@ end
 function Provider.codec(self)
   return self:provide('codec', function()
     return require('starbase.utils.codec.NvimJsonCodec').new(self:nvim())
+  end)
+end
+
+function Provider.default_settings(self)
+  return self:provide('default_settings', function()
+    return require('starbase.settings.Defaults').new(
+      require('starbase.assets.defaults')
+    )
   end)
 end
 
@@ -36,7 +50,48 @@ end
 
 function Provider.filetree(self)
   return self:provide('filetree', function()
-    return require('starbase.aspects.NERDTree').new(self:plugin_manager(), self:mapper())
+    return require('starbase.filetree.NERDTree').new(self:plugin_manager(), self:mapper())
+  end)
+end
+
+function Provider.general_settings(self)
+  return self:provide('general_settings', function()
+    return require('starbase.settings.Settings').new(
+      self:default_settings(),
+      self:project_settings()
+    )
+  end)
+end
+
+function Provider.go_settings(self)
+  return self:provide('go_settings', function()
+    return require('starbase.settings.Go').new(self:general_settings())
+  end)
+end
+
+function Provider.lsp(self)
+  return self:provide('lsp', function()
+    return require('starbase.lsp.LSP').new(
+      self:lsp_capabilities(),
+      self:mapper(),
+      self:nvim(),
+      self:plugin_manager(),
+      self:lsp_servers()
+    )
+  end)
+end
+
+function Provider.lsp_capabilities(self)
+  return self:provide('lsp_capabilities', function()
+    return require('starbase.lsp.DefaultCapabilities').new()
+  end)
+end
+
+function Provider.lsp_servers(self)
+  return self:provide('lsp_servers', function()
+    return {
+      require('starbase.lsp.Gopls').new(self:go_settings()),
+    }
   end)
 end
 
@@ -64,9 +119,13 @@ function Provider.plugin_manager(self)
   end)
 end
 
-function Provider.settings_builder(self)
-  return self:provide('settings_builder', function()
-    return require('starbase.settings.Builder').new()
+function Provider.project_settings(self)
+  return self:provide('project_settings', function()
+    return require('starbase.settings.Project').new(
+      self:codec(),
+      self:file_system(),
+      self:settings_file_name()
+    )
   end)
 end
 
@@ -102,8 +161,8 @@ function Provider.treesitter(self)
   end)
 end
 
-function Provider.editor_aspect(self)
-  return self:provide('editor_aspect', function()
+function Provider.editor(self)
+  return self:provide('editor', function()
     return require('starbase.aspects.Editor').new(
       self:nvim(),
       self:mapper(),

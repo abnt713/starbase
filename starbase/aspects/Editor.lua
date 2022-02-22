@@ -1,12 +1,10 @@
 Editor = {}
 Editor.__index = Editor
 
-function Editor.new(nvim, mapper, theme, statusline)
+function Editor.new(nvim, mapper)
   return setmetatable({
     nvim = nvim,
     mapper = mapper,
-    theme = theme,
-    statusline = statusline,
   }, Editor)
 end
 
@@ -15,9 +13,6 @@ function Editor.configure(self)
   self:setup_mappings()
 
   self:export_file_def()
-
-  self.theme:apply()
-  self.statusline:load()
 end
 
 function Editor.setup_nvim(self)

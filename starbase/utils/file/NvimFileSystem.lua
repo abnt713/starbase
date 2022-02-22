@@ -7,9 +7,9 @@ function NvimFileSystem.new(nvim)
   }, NvimFileSystem)
 end
 
-function NvimFileSystem.path_from_cwd(self, file)
+function NvimFileSystem.path_from_cwd(self, filename)
   local cwd = self.nvim.fn.getcwd()
-  return cwd .. '/' .. file
+  return cwd .. '/' .. filename
 end
 
 function NvimFileSystem.exists(self, path)

@@ -1,19 +1,17 @@
 Starbase = {}
 Starbase.__index = Starbase
 
-function Starbase.new(editor, filetree, plugin_manager, treesitter)
+function Starbase.new(layers, plugin_manager)
   return setmetatable({
-    editor = editor,
-    filetree = filetree,
+    layers = layers,
     plugin_manager = plugin_manager,
-    treesitter = treesitter,
   }, Starbase)
 end
 
 function Starbase.init(self)
-  self.editor:configure()
-  self.filetree:configure()
-  self.treesitter:configure()
+  for _, layer in pairs(self.layers) do
+    layer:configure()
+  end
 
   self.plugin_manager:evaluate()
 end

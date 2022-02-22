@@ -9,7 +9,7 @@ function Palenight.new(nvim, plugin_manager, statusline)
   }, Palenight)
 end
 
-function Palenight.apply(self)
+function Palenight.configure(self)
   self.plugin_manager:add_dependency('Cybolic/palenight.vim', self:configure_theme())
   self.statusline:set_theme('palenight', {'lualine'})
 end

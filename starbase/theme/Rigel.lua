@@ -9,7 +9,7 @@ function Rigel.new(nvim, plugin_manager, statusline)
   }, Rigel)
 end
 
-function Rigel.apply(self)
+function Rigel.configure(self)
   self.plugin_manager:add_dependency('Rigellute/rigel', self:configure_theme())
   self.statusline:set_theme('rigel', {'airline', 'lightline'})
 end

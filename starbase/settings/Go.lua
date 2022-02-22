@@ -1,15 +1,16 @@
 Go = {}
 Go.__index = Go
 
-function Go.new(go_contents)
+function Go.new(settings)
   return setmetatable({
-    contents = go_contents,
+    settings = settings,
   }, Go)
 end
 
 function Go.concat_buildtags(self, separator)
-  if self.contents.tags == nil then return nil end
-  return table.concat(self.contents.tags, separator)
+  local tags = self.settings:get('go.tags')
+  if tags == nil then return nil end
+  return table.concat(tags, separator)
 end
 
 return Go
