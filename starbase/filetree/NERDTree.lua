@@ -1,10 +1,10 @@
 local NERDTree = {}
 NERDTree.__index = NERDTree
 
-function NERDTree.new(plugin_manager, mapper)
+function NERDTree.new(mapper, plugin_manager)
   return setmetatable({
-    plugin_manager = plugin_manager,
     mapper = mapper,
+    plugin_manager = plugin_manager,
   }, NERDTree)
 end
 

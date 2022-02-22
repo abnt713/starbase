@@ -23,6 +23,9 @@ function Provider.starbase(self)
         self:lsp(),
         self:treesitter(),
         self:lint(),
+
+        self:fuzzy(),
+        self:git(),
       },
       self:plugin_manager()
     )
@@ -51,7 +54,13 @@ end
 
 function Provider.filetree(self)
   return self:provide('filetree', function()
-    return require('starbase.filetree.NERDTree').new(self:plugin_manager(), self:mapper())
+    return require('starbase.filetree.NERDTree').new(self:mapper(), self:plugin_manager())
+  end)
+end
+
+function Provider.fuzzy(self)
+  return self:provide('fuzzy', function()
+    return require('starbase.fuzzy.Telescope').new(self:mapper(), self:plugin_manager())
   end)
 end
 
@@ -60,6 +69,15 @@ function Provider.general_settings(self)
     return require('starbase.settings.Settings').new(
       self:default_settings(),
       self:project_settings()
+    )
+  end)
+end
+
+function Provider.git(self)
+  return self:provide('git', function()
+    return require('starbase.git.Fugitive').new(
+      self:mapper(),
+      self:plugin_manager()
     )
   end)
 end
@@ -176,8 +194,7 @@ function Provider.editor(self)
     return require('starbase.aspects.Editor').new(
       self:nvim(),
       self:mapper(),
-      self:theme(),
-      self:statusline()
+      self:plugin_manager()
     )
   end)
 end

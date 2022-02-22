@@ -18,11 +18,12 @@ function NvimLint.setup_plugin(self)
     if not lint then return end
 
     lint.linters_by_ft = {
-      'golangcilint',
-      'luacheck',
+      go = {'revive'},
+      lua = {'luacheck'},
     }
     self.nvim.api.nvim_exec([[
-      au BufWritePost <buffer> lua require('lint').try_lint()
+      au BufWritePost * lua require('lint').try_lint()
+      au BufWinEnter * lua require('lint').try_lint()
     ]], false)
   end
 end

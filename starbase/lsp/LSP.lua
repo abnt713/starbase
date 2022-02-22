@@ -12,10 +12,7 @@ function LanguageServerProtocol.new(lsp_capabilities, mapper, nvim, plugin_manag
 end
 
 function LanguageServerProtocol.configure(self)
-  self.plugin_manager:add_dependency('nvim-lua/completion-nvim')
-  self.plugin_manager:add_dependency('nvim-lua/lsp_extensions.nvim')
   self.plugin_manager:add_dependency('ojroques/nvim-lspfuzzy')
-
   self.plugin_manager:add_dependency('neovim/nvim-lspconfig', self:setup_lsp())
 end
 
@@ -33,6 +30,7 @@ function LanguageServerProtocol.setup_lsp(self)
     end
 
     lspfuzzy.setup({})
+    self.nvim.diagnostic.config({virtual_text = false})
   end
 end
 
