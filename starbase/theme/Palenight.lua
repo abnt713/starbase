@@ -18,6 +18,8 @@ function Palenight.configure_theme(self)
   return function()
     self.nvim.o.background = 'dark'
     self.nvim.wo.cursorline = true
+    -- TODO: Get italic from settings
+    self.nvim.g.palenight_terminal_italics = 1
     self.plugin_manager:run(function()
       self.nvim.cmd 'colorscheme palenight'
     end)
