@@ -1,7 +1,6 @@
 Packer = {}
 Packer.__index = Packer
 
-
 function Packer.new(nvim)
   obj = setmetatable({
     is_root = true,
@@ -39,6 +38,49 @@ function Packer.evaluate(self)
 
   self:configure()
   return packer_result
+end
+
+function Packer.require(self, requirement, should_fail)
+  local call_fails = should_fail or false 
+  local module = nil
+  local status = pcall(function()
+    module = require(requirement)
+  end)
+
+  if not status and not should_fail then
+    self:sync()
+    return self:require(requirement, true)
+  end
+
+  if not status then 
+    print(string.format('Missing "%s" dependency! Syncing all plugins... Please reload the editor once finished', requirement))
+    return nil
+  end
+
+  return module
+end
+
+function Packer.run(self, action_fn, should_fail)
+  local call_fails = should_fail or false 
+  local status, err = pcall(function()
+    action_fn()
+  end)
+
+  if not status and not should_fail then
+    self:sync()
+    return self:run(action_fn, true)
+  end
+
+  if not status then 
+    print('Missing dependencies! Syncing all plugins... Please reload the editor once finished')
+    return false
+  end
+
+  return true
+end
+
+function Packer.sync(self)
+  require('packer').sync()
 end
 
 function Packer.flatten(self)

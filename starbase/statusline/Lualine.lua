@@ -29,7 +29,11 @@ end
 
 function Lualine.setup_lualine(self)
   return function()
-    require('lualine').setup {
+    local lualine = self.plugin_manager:require('lualine')
+    if not lualine then return end
+
+    -- local lualine = require('lualine')
+    lualine.setup {
       options = {
         icons_enabled = true,
         theme = self.theme or nil,
