@@ -30,19 +30,22 @@ end
 
 function Packer.evaluate(self)
   if not self.is_root then return end
-  return require('packer').startup(function()
+  local packer_result = require('packer').startup(function()
     local total = 0
     for k, v in pairs(self.dependencies) do
       use(v:flatten())
     end
   end)
+
+  self:configure()
+  return packer_result
 end
 
 function Packer.flatten(self)
   if self.is_root then return end
 
   local pdep = {self.plugin_name}
-  if self.config then pdep['config'] = self.config end
+  -- if self.config then pdep['config'] = self.config end
   if self.opts then pdep = self.nvim.tbl_extend('force', pdep, self.opts) end
 
   local requires = {}
@@ -58,6 +61,13 @@ function Packer.flatten(self)
   end
 
   return pdep
+end
+
+function Packer.configure(self)
+  if self.config then self.config() end
+  for k, v in pairs(self.dependencies) do
+    v:configure()
+  end
 end
 
 return Packer
