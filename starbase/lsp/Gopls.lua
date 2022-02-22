@@ -11,10 +11,14 @@ function Gopls.configure(self, lspcfg, capabilities)
   local tag_list = self.go_settings:concat_buildtags(',')
   local gopls_settings = {
     settings = {
-      gopls = {}
+      gopls = {
+        buildFlags = {},
+        env = nil,
+      }
     },
-    capabilities = capabilities,
   }
+
+  if capabilities then settings['capabilities'] = capabilities end
 
   if tag_list ~= '' then
     gopls_settings.settings.gopls['buildFlags'] = {"-tags=" .. tag_list}

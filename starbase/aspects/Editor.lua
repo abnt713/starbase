@@ -77,6 +77,7 @@ function Editor.export_file_def(self)
     function()
       local file_reference = self.nvim.fn.expand('%') .. ':' .. self.nvim.fn.line('.')
       self.nvim.fn.setreg('+', file_reference)
+      -- TODO: Abstract dialog
       print('"' .. file_reference .. '" copied to clipboard')
     end,
   } 

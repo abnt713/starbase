@@ -1,11 +1,11 @@
 Project = {}
 Project.__index = Project
 
-function Project.new(codec, fs, settings_file)
+function Project.new(codec, fs, settings_filename)
   proj_settings = setmetatable({
     codec = codec,
     fs = fs,
-    settings_file = settings_file,
+    settings_filename = settings_filename,
 
     settings = {},
   }, Project)
@@ -15,25 +15,17 @@ function Project.new(codec, fs, settings_file)
 end
 
 function Project.parse(self)
-  local project_file_name = self.fs:path_from_cwd(self.settings_file)
-  if not self.fs:exists(project_file_name) then
+  local project_filename = self.fs:path_from_cwd(self.settings_filename)
+  if not self.fs:exists(project_filename) then
     return
   end
 
   -- TODO: Improve error handling.
-  local contents = nil
-  contents = self.fs:read(project_file_name)
+  local contents = self.fs:read(project_filename)
 
   -- TODO: Improve error handling.
-  local json_content = nil
-  json_content = self.codec:decode(contents)
-
-  for k, v in pairs(json_content) do 
-    project_settings = self.builder:settings_from_key(k, v)
-    if project_settings ~= nil then
-      self.settings[k] = project_settings
-    end
-  end
+  local json_content = self.codec:decode(contents)
+  self.contents = json_content
 end
 
 function Project.get(self, setting)
