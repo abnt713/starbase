@@ -2,7 +2,7 @@ Provider = {}
 Provider.__index = Provider
 
 function Provider:new()
-  o = {
+  local o = {
     is_running_vim = (vim ~= nil),
     instances = {},
   }
@@ -24,13 +24,13 @@ end
 
 function Provider.codec(self)
   return self:provide('codec', function()
-    return require('starbase.codec.NvimJsonCodec').new(self:nvim())
+    return require('starbase.utils.codec.NvimJsonCodec').new(self:nvim())
   end)
 end
 
 function Provider.file_system(self)
   return self:provide('fs', function()
-    return require('starbase.file.NvimFileSystem').new(self:nvim())
+    return require('starbase.utils.file.NvimFileSystem').new(self:nvim())
   end)
 end
 
@@ -42,7 +42,7 @@ end
 
 function Provider.mapper(self)
   return self:provide('mapper', function()
-    return require('starbase.map.NvimMapper').new(self:nvim())
+    return require('starbase.utils.map.NvimMapper').new(self:nvim())
   end)
 end
 
@@ -51,7 +51,7 @@ function Provider.nvim(self)
     if self.is_running_vim then
       return vim 
     end
-    return require('starbase.dummy.nvim')
+    return require('starbase.utils.dummy.nvim')
   end)
 end
 
@@ -60,7 +60,7 @@ function Provider.plugin_manager(self)
     if self.is_running_vim then
       return require('starbase.plugin.Packer').new(self:nvim())
     end
-    return require('starbase.dummy.PluginManager').new()
+    return require('starbase.utils.dummy.PluginManager').new()
   end)
 end
 
