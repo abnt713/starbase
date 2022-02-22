@@ -1,8 +1,8 @@
-Project = {}
+local Project = {}
 Project.__index = Project
 
 function Project.new(codec, fs, settings_filename)
-  proj_settings = setmetatable({
+  local proj_settings = setmetatable({
     codec = codec,
     fs = fs,
     settings_filename = settings_filename,
@@ -30,9 +30,8 @@ end
 
 function Project.get(self, setting)
   local value = self.contents
-  local setting_value = nil
 
-  for setting_value in string.gmatch(setting, '(%w+)') do 
+  for setting_value in string.gmatch(setting, '(%w+)') do
     if type(value) ~= 'table' then return nil end
     value = value[setting_value]
   end

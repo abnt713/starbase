@@ -1,8 +1,8 @@
-Packer = {}
+local Packer = {}
 Packer.__index = Packer
 
 function Packer.new(nvim)
-  obj = setmetatable({
+  local obj = setmetatable({
     is_root = true,
     nvim = nvim,
     dependencies = {}
@@ -13,7 +13,7 @@ function Packer.new(nvim)
 end
 
 function Packer.add_dependency(self, plugin_name, config, opts)
-  dep = {
+  local dep = {
     plugin_name = plugin_name,
     config = config,
     opts = opts,
@@ -21,7 +21,7 @@ function Packer.add_dependency(self, plugin_name, config, opts)
     dependencies = {},
     nvim = self.nvim,
   }
-  packer_dep = setmetatable(dep, Packer)
+  local packer_dep = setmetatable(dep, Packer)
   table.insert(self.dependencies, packer_dep)
 
   return packer_dep
@@ -30,8 +30,7 @@ end
 function Packer.evaluate(self)
   if not self.is_root then return end
   local packer_result = require('packer').startup(function()
-    local total = 0
-    for k, v in pairs(self.dependencies) do
+    for _, v in pairs(self.dependencies) do
       use(v:flatten())
     end
   end)
@@ -41,7 +40,6 @@ function Packer.evaluate(self)
 end
 
 function Packer.require(self, requirement, should_fail)
-  local call_fails = should_fail or false 
   local module = nil
   local status = pcall(function()
     module = require(requirement)
@@ -52,8 +50,13 @@ function Packer.require(self, requirement, should_fail)
     return self:require(requirement, true)
   end
 
-  if not status then 
-    print(string.format('Missing "%s" dependency! Syncing all plugins... Please reload the editor once finished', requirement))
+  if not status then
+    print(string.format(
+      'Missing "%s" dependency! \z
+      Syncing all plugins... \z
+      Please reload the editor once finished',
+      requirement
+    ))
     return nil
   end
 
@@ -61,8 +64,7 @@ function Packer.require(self, requirement, should_fail)
 end
 
 function Packer.run(self, action_fn, should_fail)
-  local call_fails = should_fail or false 
-  local status, err = pcall(function()
+  local status = pcall(function()
     action_fn()
   end)
 
@@ -71,7 +73,7 @@ function Packer.run(self, action_fn, should_fail)
     return self:run(action_fn, true)
   end
 
-  if not status then 
+  if not status then
     print('Missing dependencies! Syncing all plugins... Please reload the editor once finished')
     return false
   end
@@ -79,7 +81,7 @@ function Packer.run(self, action_fn, should_fail)
   return true
 end
 
-function Packer.sync(self)
+function Packer.sync()
   require('packer').sync()
 end
 
@@ -107,7 +109,7 @@ end
 
 function Packer.configure(self)
   if self.config then self.config() end
-  for k, v in pairs(self.dependencies) do
+  for _, v in pairs(self.dependencies) do
     v:configure()
   end
 end

@@ -1,4 +1,4 @@
-Treesitter = {}
+local Treesitter = {}
 Treesitter.__index = Treesitter
 
 function Treesitter.new(plugin_manager)
@@ -8,9 +8,9 @@ function Treesitter.new(plugin_manager)
 end
 
 function Treesitter.configure(self)
-  local treesitter_dep = self.plugin_manager:add_dependency(
-    'nvim-treesitter/nvim-treesitter', 
-    self:setup(), 
+  self.plugin_manager:add_dependency(
+    'nvim-treesitter/nvim-treesitter',
+    self:setup(),
     {run = function() vim.cmd 'TSUpdate' end}
   )
   self.plugin_manager:add_dependency('nvim-treesitter/playground')

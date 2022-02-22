@@ -1,4 +1,4 @@
-Settings = {}
+local Settings = {}
 Settings.__index = Settings
 
 function Settings.new(default_settings, project_settings)
@@ -10,7 +10,7 @@ end
 
 function Settings.get(self, setting)
   local project_setting_value = self.project_settings:get(setting)
-  if not project_setting_value then 
+  if not project_setting_value then
     return self.default_settings:get(setting)
   end
 

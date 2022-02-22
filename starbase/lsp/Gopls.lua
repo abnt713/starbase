@@ -1,4 +1,4 @@
-Gopls = {}
+local Gopls = {}
 Gopls.__index = Gopls
 
 function Gopls.new(go_settings)
@@ -18,7 +18,7 @@ function Gopls.configure(self, lspcfg, capabilities)
     },
   }
 
-  if capabilities then settings['capabilities'] = capabilities end
+  if capabilities then gopls_settings['capabilities'] = capabilities end
 
   if tag_list ~= '' then
     gopls_settings.settings.gopls['buildFlags'] = {"-tags=" .. tag_list}

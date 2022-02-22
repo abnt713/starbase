@@ -1,6 +1,6 @@
 -- This one is a custom provider. Use this instance to override any setting.
 -- It is important to place this file in the import path "starbase.Provider"
-Provider = require('starbase.app.Provider'):new()
+local Provider = require('starbase.app.Provider'):new()
 
 -- This method, for example, overrides the default theme setting and uses the Rigel theme.
 -- Uncomment the lines below to override the theme.

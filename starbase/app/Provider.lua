@@ -1,4 +1,4 @@
-Provider = {}
+local Provider = {}
 Provider.__index = Provider
 
 function Provider:new()
@@ -22,6 +22,7 @@ function Provider.starbase(self)
         self:filetree(),
         self:lsp(),
         self:treesitter(),
+        self:lint(),
       },
       self:plugin_manager()
     )
@@ -69,6 +70,15 @@ function Provider.go_settings(self)
   end)
 end
 
+function Provider.lint(self)
+  return self:provide('lint', function()
+    return require('starbase.lint.NvimLint').new(
+      self:nvim(),
+      self:plugin_manager()
+    )
+  end)
+end
+
 function Provider.lsp(self)
   return self:provide('lsp', function()
     return require('starbase.lsp.LSP').new(
@@ -104,7 +114,7 @@ end
 function Provider.nvim(self)
   return self:provide('nvim', function()
     if self.is_running_vim then
-      return vim 
+      return vim
     end
     return require('starbase.utils.dummy.nvim')
   end)
@@ -154,7 +164,7 @@ function Provider.theme(self)
 end
 
 function Provider.treesitter(self)
-  return self:provide('treesitter', function() 
+  return self:provide('treesitter', function()
     return require('starbase.treesitter.Treesitter').new(
       self:plugin_manager()
     )

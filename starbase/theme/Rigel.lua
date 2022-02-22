@@ -1,4 +1,4 @@
-Rigel = {}
+local Rigel = {}
 Rigel.__index = Rigel
 
 function Rigel.new(nvim, plugin_manager, statusline)

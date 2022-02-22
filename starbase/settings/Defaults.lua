@@ -1,4 +1,4 @@
-Defaults = {}
+local Defaults = {}
 Defaults.__index = Defaults
 
 function Defaults.new(defaults)
@@ -9,9 +9,8 @@ end
 
 function Defaults.get(self, setting)
   local value = self.defaults
-  local setting_value = nil
 
-  for setting_value in string.gmatch(setting, '(%w+)') do 
+  for setting_value in string.gmatch(setting, '(%w+)') do
     if type(value) ~= 'table' then return nil end
     value = value[setting_value]
   end

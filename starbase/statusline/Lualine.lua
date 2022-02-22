@@ -1,4 +1,4 @@
-Lualine = {}
+local Lualine = {}
 Lualine.__index = Lualine
 
 function Lualine.new(plugin_manager)
@@ -10,7 +10,7 @@ function Lualine.new(plugin_manager)
 end
 
 function Lualine.set_theme(self, theme, supported)
-  for k, v in pairs(supported) do
+  for _, v in pairs(supported) do
     if v == 'lualine' then
       self.theme = theme
       return

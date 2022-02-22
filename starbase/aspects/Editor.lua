@@ -1,4 +1,4 @@
-Editor = {}
+local Editor = {}
 Editor.__index = Editor
 
 function Editor.new(nvim, mapper)
@@ -42,17 +42,17 @@ end
 
 function Editor.setup_mappings(self)
   self.mapper:spacemap(
-    'w', '<cmd>bd<CR>', 
+    'w', '<cmd>bd<CR>',
     'close the current buffer'
   )
 
   self.mapper:spacemap(
-    'fe', '<cmd>Explore<CR>', 
+    'fe', '<cmd>Explore<CR>',
     'open the file explorer'
   )
 
   self.mapper:spacemap(
-    'fr', self:export_file_def(), 
+    'fr', self:export_file_def(),
     'copy the current file and line definition to the clipboard'
   )
 
@@ -80,7 +80,7 @@ function Editor.export_file_def(self)
       -- TODO: Abstract dialog
       print('"' .. file_reference .. '" copied to clipboard')
     end,
-  } 
+  }
 end
 
 return Editor

@@ -1,4 +1,4 @@
-Go = {}
+local Go = {}
 Go.__index = Go
 
 function Go.new(settings)

@@ -1,4 +1,4 @@
-Starbase = {}
+local Starbase = {}
 Starbase.__index = Starbase
 
 function Starbase.new(layers, plugin_manager)

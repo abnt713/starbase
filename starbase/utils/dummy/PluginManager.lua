@@ -1,14 +1,14 @@
-PluginManager = {}
+local PluginManager = {}
 PluginManager.__index = PluginManager
 
 function PluginManager.new()
   return setmetatable({}, PluginManager)
 end
 
-function PluginManager.evaluate(self)
+function PluginManager.evaluate()
 end
 
-function PluginManager.add_dependency(self, plugin_name, config, opts)
+function PluginManager.add_dependency(self)
   return self
 end
 

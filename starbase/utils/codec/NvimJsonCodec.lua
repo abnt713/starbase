@@ -1,4 +1,4 @@
-NvimJsonCodec = {}
+local NvimJsonCodec = {}
 NvimJsonCodec.__index = NvimJsonCodec
 
 function NvimJsonCodec.new(nvim)

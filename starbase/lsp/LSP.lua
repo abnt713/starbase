@@ -1,4 +1,4 @@
-LanguageServerProtocol = {}
+local LanguageServerProtocol = {}
 LanguageServerProtocol.__index = LanguageServerProtocol
 
 function LanguageServerProtocol.new(lsp_capabilities, mapper, nvim, plugin_manager, servers)
@@ -28,7 +28,7 @@ function LanguageServerProtocol.setup_lsp(self)
     if not lspfuzzy then return end
 
     local capabilities = self.lsp_capabilities:retrieve_capabilities()
-    for k, server in pairs(self.servers) do
+    for _, server in pairs(self.servers) do
       server:configure(lspcfg, capabilities)
     end
 

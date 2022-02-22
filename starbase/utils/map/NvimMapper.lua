@@ -1,4 +1,4 @@
-NvimMapper = {}
+local NvimMapper = {}
 NvimMapper.__index = NvimMapper
 
 function NvimMapper.new(nvim)
@@ -9,14 +9,12 @@ function NvimMapper.new(nvim)
 end
 
 function NvimMapper.map(self, keys_combo, cmd, description, mode, opts)
-  local mapped_cmd = ''
-  if type(cmd) == 'table' then
+  local mapped_cmd = cmd
+  if type(mapped_cmd) == 'table' then
     local fn_name = cmd[1]
     local fn_value = cmd[2]
     finalfrontier[fn_name] = fn_value
     mapped_cmd = '<cmd>lua finalfrontier.' .. fn_name .. '()<CR>'
-  else
-    mapped_cmd = cmd
   end
   local map_mode = mode or 'n'
   local options = {noremap = true}
@@ -34,7 +32,7 @@ function NvimMapper.leadermap(self, keys_combo, cmd, description, mode, opts)
 end
 
 function NvimMapper.describe(self, keys_combo)
-  description = self.descriptions[keys_combo]
+  local description = self.descriptions[keys_combo]
   if description == nil then return end
 
   -- TODO: Abstract the information board.

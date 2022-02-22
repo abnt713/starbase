@@ -1,4 +1,4 @@
-NvimFileSystem = {}
+local NvimFileSystem = {}
 NvimFileSystem.__index = NvimFileSystem
 
 function NvimFileSystem.new(nvim)

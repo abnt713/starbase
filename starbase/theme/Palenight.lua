@@ -1,4 +1,4 @@
-Palenight = {}
+local Palenight = {}
 Palenight.__index = Palenight
 
 function Palenight.new(nvim, plugin_manager, statusline)
