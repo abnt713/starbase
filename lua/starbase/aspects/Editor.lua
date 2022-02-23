@@ -13,6 +13,10 @@ function Editor.configure(self)
   self:setup_nvim()
   self:export_file_def()
 
+  local greeter = self.plugin_manager:add_dependency('startup-nvim/startup.nvim', self:setup_greeter())
+  greeter:add_dependency('nvim-telescope/telescope.nvim')
+  greeter:add_dependency('nvim-lua/plenary.nvim')
+
   self.plugin_manager:add_dependency('editorconfig/editorconfig-vim')
   self.plugin_manager:add_dependency(
     'lukas-reineke/indent-blankline.nvim',
@@ -95,10 +99,27 @@ function Editor.export_file_def(self)
   }
 end
 
+function Editor.setup_greeter(self)
+  return function()
+    local greeter = self.plugin_manager:require('startup')
+    if not greeter then return end
+
+    greeter.setup({theme = 'dashboard'})
+  end
+end
+
 function Editor.setup_indentblankline(self)
   return function()
     local indent_mod = self.plugin_manager:require('indent_blankline')
     if not indent_mod then return end
+
+    self.nvim.g.indentLine_fileTypeExclude = {
+      'checkhealth',
+      'help',
+      'lspinfo',
+      'packer',
+      'startup',
+    }
 
     indent_mod.setup({
       char = "¦",
