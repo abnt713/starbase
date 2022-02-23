@@ -67,7 +67,11 @@ end
 
 function Provider.gopls(self)
   return self:provide('gopls', function()
-    return require('starbase.lsp.Gopls').new(self:go_settings(), self:plugin_manager())
+    return require('starbase.lsp.Gopls').new(
+      self:go_settings(),
+      self:plugin_manager(),
+      self:starbase_settings()
+    )
   end)
 end
 
@@ -109,7 +113,8 @@ function Provider.lint(self)
   return self:provide('lint', function()
     return require('starbase.lint.NvimLint').new(
       self:nvim(),
-      self:plugin_manager()
+      self:plugin_manager(),
+      self:starbase_settings()
     )
   end)
 end
@@ -136,7 +141,7 @@ function Provider.lsp_servers(self)
   return self:provide('lsp_servers', function()
     return {
       self:gopls(),
-      require('starbase.lsp.Lua').new(self:nvim()),
+      require('starbase.lsp.Lua').new(self:nvim(), self:starbase_settings()),
     }
   end)
 end

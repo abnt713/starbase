@@ -5,13 +5,23 @@ return {
     },
     startup = {
       enabled = true,
-      theme = "dashboard",
+      theme = 'dashboard',
     },
     italics = {
       enabled = true,
     },
     gitgutter = {
       enabled = true,
+    }
+  },
+  layers = {
+    go = {
+      enabled = false,
+      linters = {'revive'},
+    },
+    lua = {
+      enabled = false,
+      linters = {'luacheck'}
     }
   },
   project = {

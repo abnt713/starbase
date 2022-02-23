@@ -26,9 +26,11 @@ function LanguageServerProtocol.setup_lsp(self)
 
     local capabilities = self.lsp_capabilities:retrieve_capabilities()
     for _, server in pairs(self.servers) do
-      local lsp_name, settings = server:get_lsp_settings()
-      if capabilities then settings['capabilities'] = capabilities end
-      lspcfg[lsp_name].setup(settings)
+      if server:enabled() then
+        local lsp_name, settings = server:get_lsp_settings()
+        if capabilities then settings['capabilities'] = capabilities end
+        lspcfg[lsp_name].setup(settings)
+      end
     end
 
     lspfuzzy.setup({})

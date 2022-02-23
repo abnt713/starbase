@@ -14,7 +14,6 @@ function Fugitive.configure(self)
   self.mapper:spacemap('gs', '<cmd>Git<CR>', 'git status')
   self.mapper:spacemap('gc', '<cmd>Git commit<CR>', 'git commit')
   self.mapper:spacemap('gb', '<cmd>Git blame<CR>', 'git blame')
-  self.mapper:spacemap('gf', '<cmd>GFiles?<CR>', 'git changed files')
 
   if self.base_settings:get('editor.gitgutter.enabled') then
     self.plugin_manager:add_dependency('airblade/vim-gitgutter')

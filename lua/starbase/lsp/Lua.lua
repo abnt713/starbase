@@ -1,10 +1,15 @@
 local Lua = {}
 Lua.__index = Lua
 
-function Lua.new(nvim)
+function Lua.new(nvim, starbase_settings)
   return setmetatable({
     nvim = nvim,
+    starbase_settings = starbase_settings,
   }, Lua)
+end
+
+function Lua.enabled(self)
+  return self.starbase_settings:get('layers.lua.enabled')
 end
 
 function Lua.get_lsp_settings(self)
