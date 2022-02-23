@@ -15,18 +15,34 @@ function Provider.starbase(self)
   return self:provide('starbase', function()
     return require('starbase.app.Starbase').new(
       {
+        -- Editor, statusbar, theme and similars.
         self:editor(),
         self:theme(),
         self:statusline(),
 
+        -- Language specific settings.
+        self:gopls(),
+
+        -- Concepts from the editing world.
+        self:autocomplete(),
         self:filetree(),
         self:lsp(),
         self:treesitter(),
         self:lint(),
-
         self:fuzzy(),
+
+        -- Versioning
         self:git(),
       },
+      self:plugin_manager()
+    )
+  end)
+end
+
+function Provider.autocomplete(self)
+  return self:provide('autocomplete', function()
+    return require('starbase.autocomplete.Cmp').new(
+      self:nvim(),
       self:plugin_manager()
     )
   end)
@@ -82,6 +98,12 @@ function Provider.git(self)
   end)
 end
 
+function Provider.gopls(self)
+  return self:provide('gopls', function()
+    return require('starbase.lsp.Gopls').new(self:go_settings(), self:plugin_manager())
+  end)
+end
+
 function Provider.go_settings(self)
   return self:provide('go_settings', function()
     return require('starbase.settings.Go').new(self:general_settings())
@@ -111,14 +133,15 @@ end
 
 function Provider.lsp_capabilities(self)
   return self:provide('lsp_capabilities', function()
-    return require('starbase.lsp.DefaultCapabilities').new()
+    return self:autocomplete()
   end)
 end
 
 function Provider.lsp_servers(self)
   return self:provide('lsp_servers', function()
     return {
-      require('starbase.lsp.Gopls').new(self:go_settings()),
+      self:gopls(),
+      require('starbase.lsp.Lua').new(self:nvim()),
     }
   end)
 end

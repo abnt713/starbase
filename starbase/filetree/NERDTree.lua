@@ -9,8 +9,8 @@ function NERDTree.new(mapper, plugin_manager)
 end
 
 function NERDTree.configure(self)
-  local nt_dep = self.plugin_manager:add_dependency('preservim/nerdtree')
-  nt_dep:add_dependency('ryanoasis/vim-devicons')
+  local dep = self.plugin_manager:add_dependency('preservim/nerdtree')
+  dep:add_dependency('ryanoasis/vim-devicons')
 
   self:apply_mappings()
 end

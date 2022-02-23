@@ -26,11 +26,25 @@ function LanguageServerProtocol.setup_lsp(self)
 
     local capabilities = self.lsp_capabilities:retrieve_capabilities()
     for _, server in pairs(self.servers) do
-      server:configure(lspcfg, capabilities)
+      local lsp_name, settings = server:get_lsp_settings()
+      if capabilities then settings['capabilities'] = capabilities end
+      lspcfg[lsp_name].setup(settings)
     end
 
     lspfuzzy.setup({})
     self.nvim.diagnostic.config({virtual_text = false})
+
+    self.nvim.o.updatetime = 250
+    self.nvim.cmd [[autocmd CursorHold,CursorHoldI * lua vim.diagnostic.open_float(nil, {focus=false})]]
+
+    self.mapper:map('ga', '<cmd>lua vim.lsp.buf.code_action()<CR>', 'show code actions')
+    self.mapper:map('gh', '<cmd>lua vim.lsp.buf.hover()<CR>', 'hover over current code')
+    self.mapper:map('gD', '<cmd>lua vim.lsp.buf.declaration()<CR>', 'go to declaration')
+    self.mapper:map('gd', '<cmd>lua vim.lsp.buf.definition()<CR>', 'go to definition')
+    self.mapper:map('gr', '<cmd>lua vim.lsp.buf.references()<CR>', 'list references')
+    self.mapper:map('gi', '<cmd>lua vim.lsp.buf.implementation()<CR>', 'go to implementation')
+    self.mapper:map('gs', '<cmd>lua vim.lsp.buf.signature_help()<CR>', 'display signature help')
+    self.mapper:leadermap('rn', '<cmd>lua vim.lsp.buf.rename()<CR>', 'rename current symbol')
   end
 end
 
