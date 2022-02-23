@@ -15,6 +15,9 @@ function Provider.starbase(self)
   return self:provide('starbase', function()
     return require('starbase.app.Starbase').new(
       {
+        -- PluginManager before anyone else.
+        self:plugin_manager(),
+
         -- Editor, statusbar, theme and similars.
         self:editor(),
         self:theme(),
@@ -161,10 +164,16 @@ function Provider.nvim(self)
   end)
 end
 
+function Provider.packer(self)
+  return self:provide('packer', function()
+    return require('starbase.plugin.Packer').new(self:nvim())
+  end)
+end
+
 function Provider.plugin_manager(self)
   return self:provide('plugin_manager', function()
     if self.is_running_vim then
-      return require('starbase.plugin.Packer').new(self:nvim())
+      return require('starbase.plugin.PackerInstaller').new(self:nvim(), self:packer())
     end
     return require('starbase.utils.dummy.PluginManager').new()
   end)

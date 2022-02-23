@@ -5,6 +5,9 @@ function PluginManager.new()
   return setmetatable({}, PluginManager)
 end
 
+function PluginManager.configure()
+end
+
 function PluginManager.evaluate()
 end
 

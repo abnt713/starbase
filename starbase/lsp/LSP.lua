@@ -34,8 +34,8 @@ function LanguageServerProtocol.setup_lsp(self)
     lspfuzzy.setup({})
     self.nvim.diagnostic.config({virtual_text = false})
 
-    self.nvim.o.updatetime = 250
-    self.nvim.cmd [[autocmd CursorHold,CursorHoldI * lua vim.diagnostic.open_float(nil, {focus=false})]]
+    self.nvim.o.updatetime = 500
+    self.nvim.cmd [[autocmd CursorHold * lua vim.diagnostic.open_float(nil, {focus=false})]]
 
     self.mapper:map('ga', '<cmd>lua vim.lsp.buf.code_action()<CR>', 'show code actions')
     self.mapper:map('gh', '<cmd>lua vim.lsp.buf.hover()<CR>', 'hover over current code')

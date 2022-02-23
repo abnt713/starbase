@@ -5,7 +5,8 @@ function Packer.new(nvim)
   local obj = setmetatable({
     is_root = true,
     nvim = nvim,
-    dependencies = {}
+    dependencies = {},
+    already_synced = false,
   }, Packer)
 
   obj:add_dependency('wbthomason/packer.nvim')
@@ -29,13 +30,14 @@ end
 
 function Packer.evaluate(self)
   if not self.is_root then return end
-  local packer_result = require('packer').startup(function()
+  local packer = require('packer')
+  local packer_result = packer.startup(function()
     for _, v in pairs(self.dependencies) do
       use(v:flatten())
     end
   end)
 
-  self:configure()
+  self:configure_plugins()
   return packer_result
 end
 
@@ -81,7 +83,9 @@ function Packer.run(self, action_fn, should_fail)
   return true
 end
 
-function Packer.sync()
+function Packer.sync(self)
+  if self.already_synced then return end
+  self.already_synced = true
   require('packer').sync()
 end
 
@@ -107,10 +111,10 @@ function Packer.flatten(self)
   return pdep
 end
 
-function Packer.configure(self)
+function Packer.configure_plugins(self)
   if self.config then self.config() end
   for _, v in pairs(self.dependencies) do
-    v:configure()
+    v:configure_plugins()
   end
 end
 
