@@ -13,5 +13,8 @@ return {
     gitgutter = {
       enabled = true,
     }
-  }
+  },
+  project = {
+    file = 'starbase.json'
+  },
 }

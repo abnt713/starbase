@@ -29,25 +29,10 @@ function Provider.autocomplete(self)
   end)
 end
 
-function Provider.base_settings(self)
-  return self:provide('base_settings', function()
-    local settings_builder = self:settings_builder()
-    return require('starbase.settings.FallbackSettings').new(
-      settings_builder:from_requirement('starbase.assets.config'),
-      settings_builder:from_requirement('starbase.custom.config')
-    )
-  end)
-end
 
 function Provider.codec(self)
   return self:provide('codec', function()
     return require('starbase.utils.codec.NvimJsonCodec').new(self:nvim())
-  end)
-end
-
-function Provider.default_settings(self)
-  return self:provide('default_settings', function()
-    return self:settings_builder():from_requirement('starbase.assets.defaults')
   end)
 end
 
@@ -69,19 +54,11 @@ function Provider.fuzzy(self)
   end)
 end
 
-function Provider.general_settings(self)
-  return self:provide('general_settings', function()
-    return require('starbase.settings.FallbackSettings').new(
-      self:default_settings(),
-      self:project_settings()
-    )
-  end)
-end
 
 function Provider.git(self)
   return self:provide('git', function()
     return require('starbase.git.Fugitive').new(
-      self:base_settings(),
+      self:starbase_settings(),
       self:mapper(),
       self:plugin_manager()
     )
@@ -96,7 +73,7 @@ end
 
 function Provider.go_settings(self)
   return self:provide('go_settings', function()
-    return require('starbase.settings.Go').new(self:general_settings())
+    return require('starbase.settings.Go').new(self:project_settings())
   end)
 end
 
@@ -196,11 +173,14 @@ end
 
 function Provider.project_settings(self)
   return self:provide('project_settings', function()
+    local settings_builder = self:settings_builder()
+    local defaults = settings_builder:from_requirement('starbase.defaults.projectcfg')
     return require('starbase.settings.Project').new(
       self:codec(),
+      defaults,
       self:file_system(),
       self:settings_builder(),
-      self:settings_file_name()
+      self:starbase_settings()
     )
   end)
 end
@@ -211,9 +191,12 @@ function Provider.settings_builder(self)
   end)
 end
 
-function Provider.settings_file_name(self)
-  return self:provide('settings_file_name', function()
-    return 'starbase.json'
+function Provider.starbase_settings(self)
+  return self:provide('starbase_settings', function()
+    local settings_builder = self:settings_builder()
+
+    local defaults = settings_builder:from_requirement('starbase.defaults.starbasecfg')
+    return settings_builder:from_requirement('starbase.custom.config', defaults)
   end)
 end
 
@@ -228,7 +211,7 @@ end
 function Provider.theme(self)
   return self:provide('theme', function()
     return require('starbase.theme.Palenight').new(
-      self:base_settings(),
+      self:starbase_settings(),
       self:nvim(),
       self:plugin_manager(),
       self:statusline()
@@ -247,7 +230,7 @@ end
 function Provider.editor(self)
   return self:provide('editor', function()
     return require('starbase.aspects.Editor').new(
-      self:base_settings(),
+      self:starbase_settings(),
       self:nvim(),
       self:mapper(),
       self:plugin_manager()

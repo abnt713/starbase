@@ -95,17 +95,19 @@ function Editor.setup_mappings(self)
   self.mapper:spacemap('cc', '<cmd>ColorToggle<CR>', 'colorize color references in buffer')
 
   local starbase_path = self.nvim.fn.fnamemodify(self.nvim.env.MYVIMRC, ':p:h')
-  local configfile_path = starbase_path .. '/lua/starbase/custom/config.lua'
-  local baseconfigfile_path = starbase_path .. '/lua/starbase/assets/config.lua'
-  local providerfile_path = starbase_path .. '/lua/starbase/custom/Provider.lua'
-  local baseproviderfile_path = starbase_path .. '/lua/starbase/app/Provider.lua'
+
+  local starbasecfgfile_path = starbase_path .. '/lua/starbase/defaults/starbasecfg.lua'
+  local providerfile_path = starbase_path .. '/lua/starbase/app/Provider.lua'
+
+  local customstarbasecfgfile_path = starbase_path .. '/lua/starbase/custom/config.lua'
+  local customproviderfile_path = starbase_path .. '/lua/starbase/custom/Provider.lua'
 
   self.mapper:spacemap('ce', {
     'open_config_file',
     function ()
       self.nvim.cmd('tabnew')
-      self.nvim.cmd('e ' .. baseconfigfile_path)
-      self.nvim.cmd('vs ' .. configfile_path)
+      self.nvim.cmd('e ' .. starbasecfgfile_path)
+      self.nvim.cmd('vs ' .. customstarbasecfgfile_path)
     end,
   }, 'edit the starbase config file')
 
@@ -113,8 +115,8 @@ function Editor.setup_mappings(self)
     'open_provider_file',
     function ()
       self.nvim.cmd('tabnew')
-      self.nvim.cmd('e ' .. baseproviderfile_path)
-      self.nvim.cmd('vs ' .. providerfile_path)
+      self.nvim.cmd('e ' .. providerfile_path)
+      self.nvim.cmd('vs ' .. customproviderfile_path)
     end,
   }, 'edit the starbase provider file')
 end

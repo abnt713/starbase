@@ -1,12 +1,13 @@
 local Project = {}
 Project.__index = Project
 
-function Project.new(codec, fs, settings_builder, settings_filename)
+function Project.new(codec, defaults, fs, settings_builder, starbase_settings)
   local proj_settings = setmetatable({
     codec = codec,
+    defaults = defaults,
     fs = fs,
     settings_builder = settings_builder,
-    settings_filename = settings_filename,
+    starbase_settings = starbase_settings,
 
     settings = nil,
   }, Project)
@@ -16,8 +17,10 @@ function Project.new(codec, fs, settings_builder, settings_filename)
 end
 
 function Project.parse(self)
-  local project_filename = self.fs:path_from_cwd(self.settings_filename)
+  local project_config_filename = self.starbase_settings:get('project.file')
+  local project_filename = self.fs:path_from_cwd(project_config_filename)
   if not self.fs:exists(project_filename) then
+    self.settings = self.settings_builder:from_contents({}, self.defaults)
     return
   end
 
@@ -26,7 +29,7 @@ function Project.parse(self)
 
   -- TODO: Improve error handling.
   local json_content = self.codec:decode(contents)
-  self.settings = self.settings_builder:from_contents(json_content)
+  self.settings = self.settings_builder:from_contents(json_content, self.defaults)
 end
 
 function Project.get(self, setting)
