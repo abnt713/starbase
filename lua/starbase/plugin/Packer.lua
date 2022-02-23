@@ -86,6 +86,7 @@ end
 function Packer.sync(self)
   if self.already_synced then return end
   self.already_synced = true
+  self.nvim.api.nvim_exec('autocmd User PackerComplete quitall!')
   require('packer').sync()
 end
 

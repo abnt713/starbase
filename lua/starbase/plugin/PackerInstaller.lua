@@ -25,8 +25,10 @@ function PackerInstaller.add_dependency(self, plugin_name, config, opts)
 end
 
 function PackerInstaller.evaluate(self)
-  if self.packer_boostraped then 
+  if self.packer_boostraped then
     print('Finished! Please restart the editor...')
+    -- TODO: extract reboot into a structure
+    self.nvim.cmd('quitall!')
     return nil
   end
   return self.packer:evaluate()
