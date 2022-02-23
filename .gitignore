@@ -1,6 +1,5 @@
-lua/*
 plugin/*
-starbase/local/*
-starbase/Provider.lua
+lua/starbase/local/*
+lua/starbase/Provider.lua
 
 !.gitkeep
