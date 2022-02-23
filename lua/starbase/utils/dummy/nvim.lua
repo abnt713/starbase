@@ -8,7 +8,7 @@ return {
     getcwd = function() return '' end,
     filereadable = function() return 1 end,
     readfile = function() return '' end,
-    decode = function() return {go = {tags = {'foo', 'bar'}}} end,
+    json_decode = function() return {go = {tags = {'foo', 'bar'}}} end,
   },
   o = {
     shortmess = ''

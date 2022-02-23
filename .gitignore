@@ -2,4 +2,6 @@ plugin/*
 lua/starbase/local/*
 lua/starbase/Provider.lua
 
+/starbase
+
 !.gitkeep
