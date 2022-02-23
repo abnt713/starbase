@@ -1,5 +1,6 @@
--- This one is a custom provider. Use this instance to override any setting.
--- It is important to place this file in the import path "starbase.Provider"
+-- This one is a custom provider. Use this instance to override any DI decision.
+-- It is important to place this file in the import path "starbase.Provider".
+-- If no file is found in this path, the application will use the default Provider.
 local Provider = require('starbase.app.Provider'):new()
 
 -- This method, for example, overrides the default theme setting and uses the Rigel theme.

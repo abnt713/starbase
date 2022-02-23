@@ -2,7 +2,15 @@ return function()
   -- Used to export functionality beyond class scope.
   finalfrontier = {}
 
-  local provider = require('starbase.Provider'):new()
+  local provider = nil
+  local ok = pcall(function()
+    provider = require('starbase.Provider'):new()
+  end)
+
+  if not ok then
+    provider = require('starbase.app.Provider'):new()
+  end
+
   local starbase = provider:starbase()
   starbase:init()
 end
