@@ -14,29 +14,7 @@ end
 function Provider.starbase(self)
   return self:provide('starbase', function()
     return require('starbase.app.Starbase').new(
-      {
-        -- PluginManager before anyone else.
-        self:plugin_manager(),
-
-        -- Editor, statusbar, theme and similars.
-        self:editor(),
-        self:theme(),
-        self:statusline(),
-
-        -- Language specific settings.
-        self:gopls(),
-
-        -- Concepts from the editing world.
-        self:autocomplete(),
-        self:filetree(),
-        self:lsp(),
-        self:treesitter(),
-        self:lint(),
-        self:fuzzy(),
-
-        -- Versioning
-        self:git(),
-      },
+      self:layers(),
       self:plugin_manager()
     )
   end)
@@ -110,6 +88,34 @@ end
 function Provider.go_settings(self)
   return self:provide('go_settings', function()
     return require('starbase.settings.Go').new(self:general_settings())
+  end)
+end
+
+function Provider.layers(self)
+  return self:provide('layers', function ()
+    return {
+      -- PluginManager before anyone else.
+      self:plugin_manager(),
+
+      -- Editor, statusbar, theme and similars.
+      self:editor(),
+      self:theme(),
+      self:statusline(),
+
+      -- Language specific settings.
+      self:gopls(),
+
+      -- Concepts from the editing world.
+      self:autocomplete(),
+      self:filetree(),
+      self:lsp(),
+      self:treesitter(),
+      self:lint(),
+      self:fuzzy(),
+
+      -- Versioning
+      self:git(),
+    }
   end)
 end
 

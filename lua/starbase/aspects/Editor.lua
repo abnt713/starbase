@@ -20,6 +20,7 @@ function Editor.configure(self)
   )
   self.plugin_manager:add_dependency('christoomey/vim-tmux-navigator')
   self.plugin_manager:add_dependency('chrisbra/colorizer')
+  self.plugin_manager:add_dependency('tpope/vim-commentary')
 
   self:setup_mappings()
 end
