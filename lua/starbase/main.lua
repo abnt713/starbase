@@ -4,7 +4,7 @@ return function()
 
   local provider = nil
   local ok = pcall(function()
-    provider = require('starbase.Provider'):new()
+    provider = require('starbase.custom.Provider'):new()
   end)
 
   if not ok then

@@ -1,8 +1,9 @@
 local Palenight = {}
 Palenight.__index = Palenight
 
-function Palenight.new(nvim, plugin_manager, statusline)
+function Palenight.new(base_settings, nvim, plugin_manager, statusline)
   return setmetatable({
+    base_settings = base_settings,
     nvim = nvim,
     plugin_manager = plugin_manager,
     statusline = statusline,
@@ -17,9 +18,9 @@ end
 function Palenight.configure_theme(self)
   return function()
     self.nvim.o.background = 'dark'
-    self.nvim.wo.cursorline = true
-    -- TODO: Get italic from settings
-    self.nvim.g.palenight_terminal_italics = 1
+    if self.base_settings:get('editor.italics.enabled') then
+      self.nvim.g.palenight_terminal_italics = 1
+    end
     self.plugin_manager:run(function()
       self.nvim.cmd 'colorscheme palenight'
     end)

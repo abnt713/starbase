@@ -1,5 +1,5 @@
 -- This one is a custom provider. Use this instance to override any DI decision.
--- It is important to place this file in the import path "starbase.Provider".
+-- It is important to place this file in the import path "starbase.custom.Provider".
 -- If no file is found in this path, the application will use the default Provider.
 local ParentProvider = require('starbase.app.Provider')
 local Provider = ParentProvider:new()

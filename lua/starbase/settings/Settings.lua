@@ -1,20 +1,38 @@
 local Settings = {}
 Settings.__index = Settings
 
-function Settings.new(default_settings, project_settings)
+function Settings.new(contents)
   return setmetatable({
-    default_settings = default_settings,
-    project_settings = project_settings,
+    contents = contents,
   }, Settings)
 end
 
-function Settings.get(self, setting)
-  local project_setting_value = self.project_settings:get(setting)
-  if not project_setting_value then
-    return self.default_settings:get(setting)
+function Settings.from_requirement(_, requirement)
+  local content = nil
+  local ok = pcall(function()
+    content = require(requirement)
+  end)
+
+  if not ok then
+    content = {}
   end
 
-  return project_setting_value
+  return Settings.new(content)
+end
+
+function Settings.from_contents(_, contents)
+  return Settings.new(contents)
+end
+
+function Settings.get(self, setting)
+  local value = self.contents
+
+  for setting_value in string.gmatch(setting, '(%w+)') do
+    if type(value) ~= 'table' then return nil end
+    value = value[setting_value]
+  end
+
+  return value
 end
 
 return Settings

@@ -1,8 +1,9 @@
 local Editor = {}
 Editor.__index = Editor
 
-function Editor.new(nvim, mapper, plugin_manager)
+function Editor.new(base_settings, nvim, mapper, plugin_manager)
   return setmetatable({
+    base_settings = base_settings,
     nvim = nvim,
     mapper = mapper,
     plugin_manager = plugin_manager,
@@ -13,9 +14,11 @@ function Editor.configure(self)
   self:setup_nvim()
   self:export_file_def()
 
-  local greeter = self.plugin_manager:add_dependency('startup-nvim/startup.nvim', self:setup_greeter())
-  greeter:add_dependency('nvim-telescope/telescope.nvim')
-  greeter:add_dependency('nvim-lua/plenary.nvim')
+  if self.base_settings:get('editor.startup.enabled') then
+    local greeter = self.plugin_manager:add_dependency('startup-nvim/startup.nvim', self:setup_greeter())
+    greeter:add_dependency('nvim-telescope/telescope.nvim')
+    greeter:add_dependency('nvim-lua/plenary.nvim')
+  end
 
   self.plugin_manager:add_dependency('editorconfig/editorconfig-vim')
   self.plugin_manager:add_dependency(
@@ -52,6 +55,11 @@ function Editor.setup_nvim(self)
   self.nvim.bo.softtabstop = indent_size
 
   self.nvim.g.netrw_banner = 0
+
+  if self.base_settings:get('editor.cursorline.enabled') then
+    self.nvim.wo.cursorline = true
+  end
+
 end
 
 function Editor.setup_mappings(self)
@@ -85,6 +93,30 @@ function Editor.setup_mappings(self)
   self.mapper:spacemap('tw', '<cmd>tabclose<CR>', 'closes the current tab')
 
   self.mapper:spacemap('cc', '<cmd>ColorToggle<CR>', 'colorize color references in buffer')
+
+  local starbase_path = self.nvim.fn.fnamemodify(self.nvim.env.MYVIMRC, ':p:h')
+  local configfile_path = starbase_path .. '/lua/starbase/custom/config.lua'
+  local baseconfigfile_path = starbase_path .. '/lua/starbase/assets/config.lua'
+  local providerfile_path = starbase_path .. '/lua/starbase/custom/Provider.lua'
+  local baseproviderfile_path = starbase_path .. '/lua/starbase/app/Provider.lua'
+
+  self.mapper:spacemap('ce', {
+    'open_config_file',
+    function ()
+      self.nvim.cmd('tabnew')
+      self.nvim.cmd('e ' .. baseconfigfile_path)
+      self.nvim.cmd('vs ' .. configfile_path)
+    end,
+  }, 'edit the starbase config file')
+
+  self.mapper:spacemap('cp', {
+    'open_provider_file',
+    function ()
+      self.nvim.cmd('tabnew')
+      self.nvim.cmd('e ' .. baseproviderfile_path)
+      self.nvim.cmd('vs ' .. providerfile_path)
+    end,
+  }, 'edit the starbase provider file')
 end
 
 function Editor.export_file_def(self)
@@ -104,7 +136,7 @@ function Editor.setup_greeter(self)
     local greeter = self.plugin_manager:require('startup')
     if not greeter then return end
 
-    greeter.setup({theme = 'dashboard'})
+    greeter.setup({theme = self.base_settings:get('editor.startup.theme')})
   end
 end
 

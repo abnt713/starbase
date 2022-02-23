@@ -1,6 +1,8 @@
 plugin/*
 lua/starbase/local/*
-lua/starbase/Provider.lua
+
+lua/starbase/custom/Provider.lua
+lua/starbase/custom/config.lua
 
 /starbase
 

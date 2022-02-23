@@ -1,13 +1,14 @@
 local Project = {}
 Project.__index = Project
 
-function Project.new(codec, fs, settings_filename)
+function Project.new(codec, fs, settings_builder, settings_filename)
   local proj_settings = setmetatable({
     codec = codec,
     fs = fs,
+    settings_builder = settings_builder,
     settings_filename = settings_filename,
 
-    settings = {},
+    settings = nil,
   }, Project)
 
   proj_settings:parse()
@@ -25,18 +26,12 @@ function Project.parse(self)
 
   -- TODO: Improve error handling.
   local json_content = self.codec:decode(contents)
-  self.contents = json_content
+  self.settings = self.settings_builder:from_contents(json_content)
 end
 
 function Project.get(self, setting)
-  local value = self.contents
-
-  for setting_value in string.gmatch(setting, '(%w+)') do
-    if type(value) ~= 'table' then return nil end
-    value = value[setting_value]
-  end
-
-  return value
+  if not self.settings then return nil end
+  return self.settings:get(setting)
 end
 
 return Project
