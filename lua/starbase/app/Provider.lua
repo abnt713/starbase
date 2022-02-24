@@ -44,7 +44,11 @@ end
 
 function Provider.filetree(self)
   return self:provide('filetree', function()
-    return require('starbase.filetree.NERDTree').new(self:mapper(), self:plugin_manager())
+    return require('starbase.filetree.NERDTree').new(
+      self:mapper(),
+      self:nvim(),
+      self:plugin_manager()
+    )
   end)
 end
 
