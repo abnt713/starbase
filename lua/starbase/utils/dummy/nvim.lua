@@ -17,6 +17,7 @@ return {
   o = {
     shortmess = ''
   },
+  opt = {},
   wo = {},
   bo = {},
   g = {},
