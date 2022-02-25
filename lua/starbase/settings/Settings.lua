@@ -39,7 +39,7 @@ end
 function Settings.get_from_contents(self, setting)
   local value = self.contents
 
-  for setting_value in string.gmatch(setting, '(%w+)') do
+  for setting_value in string.gmatch(setting, '[^%.]+') do
     if type(value) ~= 'table' then return nil end
     value = value[setting_value]
   end

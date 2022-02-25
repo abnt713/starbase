@@ -1,13 +1,21 @@
 local LanguageServerProtocol = {}
 LanguageServerProtocol.__index = LanguageServerProtocol
 
-function LanguageServerProtocol.new(lsp_capabilities, mapper, nvim, plugin_manager, servers)
+function LanguageServerProtocol.new(
+  lsp_capabilities,
+  lsp_servers,
+  mapper,
+  nvim,
+  plugin_manager,
+  starbase_settings
+  )
   return setmetatable({
     lsp_capabilities = lsp_capabilities,
+    lsp_servers = lsp_servers,
     mapper = mapper,
     nvim = nvim,
     plugin_manager = plugin_manager,
-    servers = servers,
+    starbase_settings = starbase_settings,
   }, LanguageServerProtocol)
 end
 
@@ -25,7 +33,7 @@ function LanguageServerProtocol.setup_lsp(self)
     if not lspfuzzy then return end
 
     local capabilities = self.lsp_capabilities:retrieve_capabilities()
-    for _, server in pairs(self.servers) do
+    for _, server in pairs(self.lsp_servers) do
       if server:enabled() then
         local lsp_name, settings = server:get_lsp_settings()
         if capabilities then settings['capabilities'] = capabilities end
@@ -35,9 +43,12 @@ function LanguageServerProtocol.setup_lsp(self)
 
     lspfuzzy.setup({})
     self.nvim.diagnostic.config({virtual_text = false})
-
     self.nvim.o.updatetime = 500
-    self.nvim.cmd [[autocmd CursorHold * lua vim.diagnostic.open_float(nil, {focus=false})]]
+
+    local show_on_hover = self.starbase_settings:get('diagnostics.show_on_hover')
+    if show_on_hover then
+      self.nvim.cmd [[autocmd CursorHold * lua vim.diagnostic.open_float(nil, {focus=false})]]
+    end
 
     self.mapper:map('ga', '<cmd>lua vim.lsp.buf.code_action()<CR>', 'show code actions')
     self.mapper:map('gh', '<cmd>lua vim.lsp.buf.hover()<CR>', 'hover over current code')
@@ -46,6 +57,7 @@ function LanguageServerProtocol.setup_lsp(self)
     self.mapper:map('gr', '<cmd>lua vim.lsp.buf.references()<CR>', 'list references')
     self.mapper:map('gi', '<cmd>lua vim.lsp.buf.implementation()<CR>', 'go to implementation')
     self.mapper:map('gs', '<cmd>lua vim.lsp.buf.signature_help()<CR>', 'display signature help')
+    self.mapper:map('gl', '<cmd>lua vim.diagnostic.open_float(nil, {focus=false})<CR>', 'show linter diagnostics')
     self.mapper:leadermap('rn', '<cmd>lua vim.lsp.buf.rename()<CR>', 'rename current symbol')
   end
 end

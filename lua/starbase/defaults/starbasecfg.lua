@@ -14,6 +14,9 @@ return {
       enabled = true,
     }
   },
+  diagnostics = {
+    show_on_hover = false,
+  },
   layers = {
     go = {
       enabled = false,

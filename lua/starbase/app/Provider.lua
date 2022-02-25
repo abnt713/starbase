@@ -127,10 +127,11 @@ function Provider.lsp(self)
   return self:provide('lsp', function()
     return require('starbase.lsp.LSP').new(
       self:lsp_capabilities(),
+      self:lsp_servers(),
       self:mapper(),
       self:nvim(),
       self:plugin_manager(),
-      self:lsp_servers()
+      self:starbase_settings()
     )
   end)
 end
