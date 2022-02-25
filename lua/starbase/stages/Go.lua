@@ -1,23 +1,24 @@
-local Gopls = {}
-Gopls.__index = Gopls
+local Go = {}
+Go.__index = Go
 
-function Gopls.new(go_settings, plugin_manager, starbase_settings)
+function Go.new(self, go_settings, linter, lsp, plugin_manager, starbase_settings)
   return setmetatable({
     go_settings = go_settings,
+    linter = linter,
+    lsp = lsp,
     plugin_manager = plugin_manager,
     starbase_settings = starbase_settings,
-  }, Gopls)
+  }, self)
 end
 
-function Gopls.configure(self)
+function Go.configure(self)
+  if not self.starbase_settings:get('layers.go.enabled') then return end
   self.plugin_manager:add_dependency('mattn/vim-goimports')
+  self.lsp:add_server('gopls', self:gopls_settings())
+  self.linter:set_linters_for_ft('go', self.starbase_settings:get('layers.go.linters'))
 end
 
-function Gopls.enabled(self)
-  return self.starbase_settings:get('layers.go.enabled')
-end
-
-function Gopls.get_lsp_settings(self)
+function Go.gopls_settings(self)
   local tag_list = self.go_settings:concat_buildtags(',')
   local gopls_settings = {
     settings = {
@@ -33,7 +34,7 @@ function Gopls.get_lsp_settings(self)
     gopls_settings.settings.gopls['env'] = {GOFLAGS = "-tags=" .. tag_list}
   end
 
-  return 'gopls', gopls_settings
+  return gopls_settings
 end
 
-return Gopls
+return Go

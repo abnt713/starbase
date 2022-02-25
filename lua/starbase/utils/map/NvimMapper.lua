@@ -4,6 +4,7 @@ NvimMapper.__index = NvimMapper
 function NvimMapper.new(nvim)
   return setmetatable({
     nvim = nvim,
+
     descriptions = {},
   }, NvimMapper)
 end

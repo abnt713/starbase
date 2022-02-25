@@ -1,21 +1,19 @@
 local Provider = {}
 Provider.__index = Provider
 
-function Provider:new()
-  local o = {
-    is_running_vim = (vim ~= nil),
+function Provider.new(self, nvim)
+  return setmetatable({
+    is_running_vim = (nvim ~= nil),
     instances = {},
-  }
-  setmetatable(o, self)
-  self.__index = self
-  return o
+  }, self)
 end
 
 function Provider.starbase(self)
   return self:provide('starbase', function()
     return require('starbase.app.Starbase').new(
-      self:layers(),
-      self:plugin_manager()
+      self:plugin_manager(),
+      self:stages(),
+      self:tools()
     )
   end)
 end
@@ -69,46 +67,23 @@ function Provider.git(self)
   end)
 end
 
-function Provider.gopls(self)
-  return self:provide('gopls', function()
-    return require('starbase.lsp.Gopls').new(
-      self:go_settings(),
-      self:plugin_manager(),
-      self:starbase_settings()
-    )
-  end)
-end
-
 function Provider.go_settings(self)
   return self:provide('go_settings', function()
     return require('starbase.settings.Go').new(self:project_settings())
   end)
 end
 
-function Provider.layers(self)
+function Provider.stages(self)
   return self:provide('layers', function ()
     return {
-      -- PluginManager before anyone else.
-      self:plugin_manager(),
-
-      -- Editor, statusbar, theme and similars.
       self:editor(),
-      self:theme(),
-      self:statusline(),
-
-      -- Language specific settings.
-      self:gopls(),
-
-      -- Concepts from the editing world.
-      self:autocomplete(),
-      self:filetree(),
-      self:lsp(),
-      self:treesitter(),
-      self:lint(),
-      self:fuzzy(),
-
-      -- Versioning
-      self:git(),
+      require('starbase.stages.Go'):new(
+        self:go_settings(),
+        self:lint(),
+        self:lsp(),
+        self:plugin_manager(),
+        self:starbase_settings()
+      )
     }
   end)
 end
@@ -127,7 +102,6 @@ function Provider.lsp(self)
   return self:provide('lsp', function()
     return require('starbase.lsp.LSP').new(
       self:lsp_capabilities(),
-      self:lsp_servers(),
       self:mapper(),
       self:nvim(),
       self:plugin_manager(),
@@ -139,15 +113,6 @@ end
 function Provider.lsp_capabilities(self)
   return self:provide('lsp_capabilities', function()
     return self:autocomplete()
-  end)
-end
-
-function Provider.lsp_servers(self)
-  return self:provide('lsp_servers', function()
-    return {
-      self:gopls(),
-      require('starbase.lsp.Lua').new(self:nvim(), self:starbase_settings()),
-    }
   end)
 end
 
@@ -229,6 +194,27 @@ function Provider.theme(self)
   end)
 end
 
+function Provider.tools(self)
+  return self:provide('tools', function()
+    return {
+      -- statusbar, theme and similars.
+      self:theme(),
+      self:statusline(),
+
+      -- Concepts from the editing world.
+      self:autocomplete(),
+      self:filetree(),
+      self:lsp(),
+      self:treesitter(),
+      self:lint(),
+      self:fuzzy(),
+
+      -- Versioning
+      self:git(),
+    }
+  end)
+end
+
 function Provider.treesitter(self)
   return self:provide('treesitter', function()
     return require('starbase.treesitter.Treesitter').new(
@@ -239,7 +225,7 @@ end
 
 function Provider.editor(self)
   return self:provide('editor', function()
-    return require('starbase.aspects.Editor').new(
+    return require('starbase.stages.Editor').new(
       self:starbase_settings(),
       self:nvim(),
       self:mapper(),

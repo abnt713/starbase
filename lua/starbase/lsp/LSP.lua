@@ -3,7 +3,6 @@ LanguageServerProtocol.__index = LanguageServerProtocol
 
 function LanguageServerProtocol.new(
   lsp_capabilities,
-  lsp_servers,
   mapper,
   nvim,
   plugin_manager,
@@ -11,12 +10,17 @@ function LanguageServerProtocol.new(
   )
   return setmetatable({
     lsp_capabilities = lsp_capabilities,
-    lsp_servers = lsp_servers,
     mapper = mapper,
     nvim = nvim,
     plugin_manager = plugin_manager,
     starbase_settings = starbase_settings,
+
+    lsp_servers = {},
   }, LanguageServerProtocol)
+end
+
+function LanguageServerProtocol.add_server(self, name, settings)
+  table.insert(self.lsp_servers, {name = name, settings = settings}) 
 end
 
 function LanguageServerProtocol.configure(self)
@@ -34,11 +38,8 @@ function LanguageServerProtocol.setup_lsp(self)
 
     local capabilities = self.lsp_capabilities:retrieve_capabilities()
     for _, server in pairs(self.lsp_servers) do
-      if server:enabled() then
-        local lsp_name, settings = server:get_lsp_settings()
-        if capabilities then settings['capabilities'] = capabilities end
-        lspcfg[lsp_name].setup(settings)
-      end
+      if capabilities then server.settings['capabilities'] = capabilities end
+      lspcfg[server.name].setup(server.settings)
     end
 
     lspfuzzy.setup({})
