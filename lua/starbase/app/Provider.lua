@@ -83,6 +83,13 @@ function Provider.stages(self)
         self:lsp(),
         self:plugin_manager(),
         self:starbase_settings()
+      ),
+      require('starbase.stages.Lua'):new(
+        self:lint(),
+        self:lsp(),
+        self:nvim(),
+        self:plugin_manager(),
+        self:starbase_settings()
       )
     }
   end)
