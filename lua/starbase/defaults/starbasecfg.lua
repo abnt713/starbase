@@ -28,7 +28,7 @@ return {
     },
     python = {
       enabled = false,
-      linters = {'pylint'}
+      linters = {'flake8'}
     }
   },
   project = {
