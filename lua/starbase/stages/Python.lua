@@ -1,12 +1,11 @@
 local Python = {}
 Python.__index = Python
 
-function Python.new(self, fs, linter, lsp, project_settings, starbase_settings)
+function Python.new(self, fs, linter, lsp, starbase_settings)
   return setmetatable({
     fs = fs,
     linter = linter,
     lsp = lsp,
-    project_settings = project_settings,
     starbase_settings = starbase_settings,
   }, self)
 end
@@ -18,19 +17,7 @@ function Python.configure(self)
 end
 
 function Python.pyright_settings(self)
-  local settings = {python = {}}
-
-  local venv_path = self.project_settings:get('python.venv_path')
-  if venv_path then
-    settings.python.venvPath = venv_path
-  end
-
-  local venv = self.project_settings:get('python.venv')
-  if venv_path then
-    settings.python.venv = venv
-  end
-
-  return settings
+  return {}
 end
 
 return Python

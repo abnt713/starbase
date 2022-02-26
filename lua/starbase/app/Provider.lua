@@ -95,7 +95,6 @@ function Provider.stages(self)
         self:file_system(),
         self:linter(),
         self:lsp(),
-        self:project_settings(),
         self:starbase_settings()
       )
     }
