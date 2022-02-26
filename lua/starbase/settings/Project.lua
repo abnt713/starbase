@@ -29,6 +29,10 @@ function Project.parse(self)
 
   -- TODO: Improve error handling.
   local json_content = self.codec:decode(contents)
+  if not json_content then
+    self.settings = self.settings_builder:from_contents({}, self.defaults)
+    return
+  end
   self.settings = self.settings_builder:from_contents(json_content, self.defaults)
 end
 

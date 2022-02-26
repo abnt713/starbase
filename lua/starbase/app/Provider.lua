@@ -79,25 +79,32 @@ function Provider.stages(self)
       self:editor(),
       require('starbase.stages.Go'):new(
         self:go_settings(),
-        self:lint(),
+        self:linter(),
         self:lsp(),
         self:plugin_manager(),
         self:starbase_settings()
       ),
       require('starbase.stages.Lua'):new(
-        self:lint(),
+        self:linter(),
         self:lsp(),
         self:nvim(),
         self:plugin_manager(),
+        self:starbase_settings()
+      ),
+      require('starbase.stages.Python'):new(
+        self:file_system(),
+        self:linter(),
+        self:lsp(),
+        self:project_settings(),
         self:starbase_settings()
       )
     }
   end)
 end
 
-function Provider.lint(self)
-  return self:provide('lint', function()
-    return require('starbase.lint.NvimLint').new(
+function Provider.linter(self)
+  return self:provide('linter', function()
+    return require('starbase.linter.NvimLint').new(
       self:nvim(),
       self:plugin_manager(),
       self:starbase_settings()
@@ -213,7 +220,7 @@ function Provider.tools(self)
       self:filetree(),
       self:lsp(),
       self:treesitter(),
-      self:lint(),
+      self:linter(),
       self:fuzzy(),
 
       -- Versioning

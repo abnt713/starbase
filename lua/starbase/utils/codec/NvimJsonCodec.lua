@@ -8,7 +8,11 @@ function NvimJsonCodec.new(nvim)
 end
 
 function NvimJsonCodec.decode(self, content)
-  return self.nvim.fn.json_decode(content)
+  local results = nil
+  pcall(function ()
+    results = self.nvim.fn.json_decode(content)
+  end)
+  return results
 end
 
 return NvimJsonCodec

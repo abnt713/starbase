@@ -25,6 +25,10 @@ return {
     lua = {
       enabled = false,
       linters = {'luacheck'}
+    },
+    python = {
+      enabled = false,
+      linters = {'pylint'}
     }
   },
   project = {
