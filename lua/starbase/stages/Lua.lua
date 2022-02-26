@@ -12,9 +12,9 @@ function Lua.new(self, linter, lsp, nvim, plugin_manager, starbase_settings)
 end
 
 function Lua.configure(self)
-  if not self.starbase_settings:get('layers.lua.enabled') then return end
+  if not self.starbase_settings:get('stages.lua.enabled') then return end
   self.lsp:add_server('sumneko_lua', self:sumneko_lua_settings())
-  self.linter:set_linters_for_ft('lua', self.starbase_settings:get('layers.lua.linters'))
+  self.linter:set_linters_for_ft('lua', self.starbase_settings:get('stages.lua.linters'))
 end
 
 function Lua.sumneko_lua_settings(self)

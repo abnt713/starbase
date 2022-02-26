@@ -12,10 +12,10 @@ function Go.new(self, go_settings, linter, lsp, plugin_manager, starbase_setting
 end
 
 function Go.configure(self)
-  if not self.starbase_settings:get('layers.go.enabled') then return end
+  if not self.starbase_settings:get('stages.go.enabled') then return end
   self.plugin_manager:add_dependency('mattn/vim-goimports')
   self.lsp:add_server('gopls', self:gopls_settings())
-  self.linter:set_linters_for_ft('go', self.starbase_settings:get('layers.go.linters'))
+  self.linter:set_linters_for_ft('go', self.starbase_settings:get('stages.go.linters'))
 end
 
 function Go.gopls_settings(self)

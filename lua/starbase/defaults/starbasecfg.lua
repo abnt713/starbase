@@ -17,7 +17,7 @@ return {
   diagnostics = {
     show_on_hover = false,
   },
-  layers = {
+  stages = {
     go = {
       enabled = false,
       linters = {'revive'},
