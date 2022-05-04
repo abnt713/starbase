@@ -1,7 +1,9 @@
 return {
   api = {
     nvim_set_keymap = function() return '' end,
+    nvim_get_runtime_file = function() return '' end,
   },
+  split = function () return {} end,
   cmd = function() return nil end,
   env = {
     MYVIMRC = '',
