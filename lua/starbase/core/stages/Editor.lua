@@ -46,7 +46,7 @@ function Editor.setup_nvim(self)
   self.nvim.wo.number = true
   self.nvim.wo.relativenumber = true
   self.nvim.wo.signcolumn = 'yes'
-  self.nvim.wo.colorcolumn = '80'
+  self.nvim.opt.colorcolumn = '80'
 
   local indent_size = 4
   self.nvim.bo.shiftwidth = indent_size
@@ -96,11 +96,11 @@ function Editor.setup_mappings(self)
 
   local starbase_path = self.nvim.fn.fnamemodify(self.nvim.env.MYVIMRC, ':p:h')
 
-  local starbasecfgfile_path = starbase_path .. '/lua/starbase/defaults/starbasecfg.lua'
-  local providerfile_path = starbase_path .. '/lua/starbase/app/Provider.lua'
+  local starbasecfgfile_path = starbase_path .. '/lua/starbase/core/defaults/starbasecfg.lua'
+  local providerfile_path = starbase_path .. '/lua/starbase/core/Provider.lua'
 
-  local customstarbasecfgfile_path = starbase_path .. '/lua/starbase/custom/config.lua'
-  local customproviderfile_path = starbase_path .. '/lua/starbase/custom/Provider.lua'
+  local customstarbasecfgfile_path = starbase_path .. '/lua/starbase/override/config.lua'
+  local customproviderfile_path = starbase_path .. '/lua/starbase/override/Provider.lua'
 
   self.mapper:spacemap('ce', {
     'open_config_file',

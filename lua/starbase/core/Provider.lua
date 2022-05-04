@@ -11,7 +11,7 @@ end
 -- starbase provides the main application.
 function Provider.starbase(self)
   return self:provide('starbase', function()
-    return require('starbase.app.Starbase').new(
+    return require('starbase.core.Starbase').new(
       self:plugin_manager(),
       self:post_hooks(),
       self:stages(),
@@ -26,20 +26,20 @@ function Provider.stages(self)
     return {
       self:editor_stage(),
       self:go_stage(),
-      require('starbase.stages.Lua'):new(
+      require('starbase.core.stages.Lua'):new(
         self:linter(),
         self:lsp(),
         self:nvim(),
         self:plugin_manager(),
         self:starbase_settings()
       ),
-      require('starbase.stages.Python'):new(
+      require('starbase.core.stages.Python'):new(
         self:file_system(),
         self:linter(),
         self:lsp(),
         self:starbase_settings()
       ),
-      require('starbase.stages.Svelte'):new(
+      require('starbase.core.stages.Svelte'):new(
         self:plugin_manager()
       )
     }
@@ -81,7 +81,7 @@ end
 -- autocomplete provides the autocomplete layer of the application.
 function Provider.autocomplete(self)
   return self:provide('autocomplete', function()
-    return require('starbase.autocomplete.Cmp').new(
+    return require('starbase.core.tools.autocomplete.Cmp').new(
       self:nvim(),
       self:plugin_manager()
     )
@@ -91,21 +91,21 @@ end
 -- codec provides the structure capable of encoding and decoding data.
 function Provider.codec(self)
   return self:provide('codec', function()
-    return require('starbase.utils.codec.NvimJsonCodec').new(self:nvim())
+    return require('starbase.core.utils.codec.NvimJsonCodec').new(self:nvim())
   end)
 end
 
 -- file_system provides a file system abstraction to work with.
 function Provider.file_system(self)
   return self:provide('fs', function()
-    return require('starbase.utils.file.NvimFileSystem').new(self:nvim())
+    return require('starbase.core.utils.file.NvimFileSystem').new(self:nvim())
   end)
 end
 
 -- filetree provides the filetree component.
 function Provider.filetree(self)
   return self:provide('filetree', function()
-    return require('starbase.filetree.NERDTree').new(
+    return require('starbase.core.tools.filetree.NERDTree').new(
       self:mapper(),
       self:nvim(),
       self:plugin_manager()
@@ -116,14 +116,14 @@ end
 -- fuzzy provides the component related to fuzzy finding needs.
 function Provider.fuzzy(self)
   return self:provide('fuzzy', function()
-    return require('starbase.fuzzy.Telescope').new(self:mapper(), self:plugin_manager())
+    return require('starbase.core.tools.fuzzy.Telescope').new(self:mapper(), self:plugin_manager())
   end)
 end
 
 -- git provides the Git component.
 function Provider.git(self)
   return self:provide('git', function()
-    return require('starbase.git.Fugitive').new(
+    return require('starbase.core.tools.git.Fugitive').new(
       self:starbase_settings(),
       self:mapper(),
       self:plugin_manager()
@@ -134,14 +134,26 @@ end
 -- go_settings provides the component which can provide go settings.
 function Provider.go_settings(self)
   return self:provide('go_settings', function()
-    return require('starbase.settings.Go').new(self:project_settings())
+    return require('starbase.core.tools.settings.Go').new(self:project_settings())
+  end)
+end
+
+-- editor provides the component which can apply base settings.
+function Provider.editor_stage(self)
+  return self:provide('editor', function()
+    return require('starbase.core.stages.Editor').new(
+      self:starbase_settings(),
+      self:nvim(),
+      self:mapper(),
+      self:plugin_manager()
+    )
   end)
 end
 
 -- go_stage is the application stage focused on Go support.
 function Provider.go_stage(self)
   return self:provide('go_stage', function ()
-    return require('starbase.stages.Go'):new(
+    return require('starbase.core.stages.Go'):new(
         self:go_settings(),
         self:linter(),
         self:lsp(),
@@ -157,7 +169,7 @@ end
 -- linter provides the linter component.
 function Provider.linter(self)
   return self:provide('linter', function()
-    return require('starbase.linter.NvimLint').new(
+    return require('starbase.core.tools.linter.NvimLint').new(
       self:nvim(),
       self:plugin_manager(),
       self:starbase_settings()
@@ -168,7 +180,7 @@ end
 -- lsp provides the LSP component.
 function Provider.lsp(self)
   return self:provide('lsp', function()
-    return require('starbase.lsp.LSP').new(
+    return require('starbase.core.tools.lsp.LSP').new(
       self:lsp_capabilities(),
       self:mapper(),
       self:nvim(),
@@ -188,7 +200,7 @@ end
 -- mapper provides the mapping abstraction.
 function Provider.mapper(self)
   return self:provide('mapper', function()
-    return require('starbase.utils.map.NvimMapper').new(self:nvim())
+    return require('starbase.core.utils.map.NvimMapper').new(self:nvim())
   end)
 end
 
@@ -198,14 +210,14 @@ function Provider.nvim(self)
     if self.is_running_vim then
       return vim
     end
-    return require('starbase.utils.dummy.nvim')
+    return require('starbase.core.utils.dummy.nvim')
   end)
 end
 
 -- packer provides the Packer plugin/package manager.
 function Provider.packer(self)
   return self:provide('packer', function()
-    return require('starbase.plugin.Packer').new(self:nvim())
+    return require('starbase.core.tools.plugin.Packer').new(self:nvim())
   end)
 end
 
@@ -213,9 +225,9 @@ end
 function Provider.plugin_manager(self)
   return self:provide('plugin_manager', function()
     if self.is_running_vim then
-      return require('starbase.plugin.PackerInstaller').new(self:nvim(), self:packer())
+      return require('starbase.core.tools.plugin.PackerInstaller').new(self:nvim(), self:packer())
     end
-    return require('starbase.utils.dummy.PluginManager').new()
+    return require('starbase.core.utils.dummy.PluginManager').new()
   end)
 end
 
@@ -224,8 +236,8 @@ end
 function Provider.project_settings(self)
   return self:provide('project_settings', function()
     local settings_builder = self:settings_builder()
-    local defaults = settings_builder:from_requirement('starbase.defaults.projectcfg')
-    return require('starbase.settings.Project').new(
+    local defaults = settings_builder:from_requirement('starbase.core.defaults.projectcfg')
+    return require('starbase.core.tools.settings.Project').new(
       self:codec(),
       defaults,
       self:file_system(),
@@ -238,7 +250,7 @@ end
 -- settings_builder provides the component which can build a set of settings.
 function Provider.settings_builder(self)
   return self:provide('settings_builder', function()
-    return require('starbase.settings.Settings').new({})
+    return require('starbase.core.tools.settings.Settings').new({})
   end)
 end
 
@@ -248,15 +260,15 @@ function Provider.starbase_settings(self)
   return self:provide('starbase_settings', function()
     local settings_builder = self:settings_builder()
 
-    local defaults = settings_builder:from_requirement('starbase.defaults.starbasecfg')
-    return settings_builder:from_requirement('starbase.custom.config', defaults)
+    local defaults = settings_builder:from_requirement('starbase.core.defaults.starbasecfg')
+    return settings_builder:from_requirement('starbase.override.config', defaults)
   end)
 end
 
 -- statusline provides the statusline component.
 function Provider.statusline(self)
   return self:provide('statusline', function()
-    return require('starbase.statusline.Lualine').new(
+    return require('starbase.core.tools.statusline.Lualine').new(
       self:plugin_manager()
     )
   end)
@@ -265,7 +277,7 @@ end
 -- theme provides the visual theme component.
 function Provider.theme(self)
   return self:provide('theme', function()
-    return require('starbase.theme.Palenight').new(
+    return require('starbase.core.tools.theme.Palenight').new(
       self:starbase_settings(),
       self:nvim(),
       self:plugin_manager(),
@@ -278,23 +290,12 @@ end
 -- treesitter provides the component which configures the neovim TS.
 function Provider.treesitter(self)
   return self:provide('treesitter', function()
-    return require('starbase.treesitter.Treesitter').new(
+    return require('starbase.core.tools.treesitter.Treesitter').new(
       self:plugin_manager()
     )
   end)
 end
 
--- editor provides the component which can apply base settings.
-function Provider.editor_stage(self)
-  return self:provide('editor', function()
-    return require('starbase.stages.Editor').new(
-      self:starbase_settings(),
-      self:nvim(),
-      self:mapper(),
-      self:plugin_manager()
-    )
-  end)
-end
 
 -- provide register a function as a provider function and binds it to an id.
 function Provider.provide(self, id, provider_fn)

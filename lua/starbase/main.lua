@@ -6,11 +6,11 @@ return function()
 
   local provider = nil
   local ok = pcall(function()
-    provider = require('starbase.custom.Provider'):new(nvim)
+    provider = require('starbase.override.Provider'):new(nvim)
   end)
 
   if not ok then
-    provider = require('starbase.app.Provider'):new(nvim)
+    provider = require('starbase.core.Provider'):new(nvim)
   end
 
   local starbase = provider:starbase()

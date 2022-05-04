@@ -1,9 +1,5 @@
-plugin/*
-lua/starbase/local/*
-
-lua/starbase/custom/*.lua
-!lua/starbase/custom/Provider.sample.lua
-
 /starbase
+/plugin/*
+/lua/starbase/override/*
 
 !.gitkeep

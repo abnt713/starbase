@@ -1,7 +1,7 @@
 return {
   editor = {
     cursorline = {
-      enabled = true
+      enabled = true,
     },
     startup = {
       enabled = true,
