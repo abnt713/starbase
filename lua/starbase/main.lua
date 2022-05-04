@@ -4,12 +4,6 @@ return function()
   local nvim = vim -- A local vim reference.
   -- End of all global values and stuff
 
-  local handlers_by_ft = {
-    go = require('starbase.test.Go'):new(nvim)
-  }
-  tester = require('starbase.test.Test'):new(handlers_by_ft, nvim)
-
-
   local provider = nil
   local ok = pcall(function()
     provider = require('starbase.custom.Provider'):new(nvim)
