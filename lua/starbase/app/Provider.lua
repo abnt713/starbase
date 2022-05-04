@@ -81,6 +81,7 @@ function Provider.stages(self)
         self:go_settings(),
         self:linter(),
         self:lsp(),
+        self:mapper(),
         self:plugin_manager(),
         self:starbase_settings()
       ),
@@ -96,6 +97,9 @@ function Provider.stages(self)
         self:linter(),
         self:lsp(),
         self:starbase_settings()
+      ),
+      require('starbase.stages.Svelte'):new(
+        self:plugin_manager()
       )
     }
   end)

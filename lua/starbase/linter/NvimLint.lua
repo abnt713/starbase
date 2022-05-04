@@ -28,6 +28,8 @@ function NvimLint.setup_plugin(self)
       lint.linters_by_ft[ft] = settings
     end
 
+    lint.linters_by_ft['markdown'] = nil
+
     self.nvim.api.nvim_exec([[
       au BufWritePost * lua require('lint').try_lint()
       au BufWinEnter * lua require('lint').try_lint()

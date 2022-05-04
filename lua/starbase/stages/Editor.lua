@@ -79,7 +79,7 @@ function Editor.setup_mappings(self)
   )
 
   self.mapper:spacemap(
-    'nt', '<cmd>set norelativenumber!<CR>',
+    'lt', '<cmd>set norelativenumber!<CR>',
     'toggle relative line number option'
   )
 
