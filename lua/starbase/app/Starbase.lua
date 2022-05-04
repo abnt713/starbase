@@ -1,9 +1,10 @@
 local Starbase = {}
 Starbase.__index = Starbase
 
-function Starbase.new(plugin_manager, stages, tools)
+function Starbase.new(plugin_manager, post_hooks, stages, tools)
   return setmetatable({
     plugin_manager = plugin_manager,
+    post_hooks = post_hooks,
     stages = stages,
     tools = tools,
   }, Starbase)
@@ -21,6 +22,10 @@ function Starbase.init(self)
   end
 
   self.plugin_manager:evaluate()
+
+  for _, hook in pairs(self.post_hooks) do
+    hook:post_trigger()
+  end
 end
 
 return Starbase
