@@ -69,12 +69,8 @@ function Provider.tools(self)
 end
 
 -- post_hooks contains all components which responds to post hooks.
-function Provider.post_hooks(self)
-  return self:provide('post_hooks', function ()
-    return {
-      self:go_stage(),
-    }
-  end)
+function Provider.post_hooks()
+  return {}
 end
 
 

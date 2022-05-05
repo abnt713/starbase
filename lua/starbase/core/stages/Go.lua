@@ -41,18 +41,6 @@ function Go.configure(self)
   self.mapper:leadermap('im', [[<cmd>lua require('telescope').extensions.goimpl.goimpl({})<CR>]])
 end
 
-function Go.post_trigger()
-  -- local tags_cmd = self:get_tags_command()
-  -- if tags_cmd == '' then
-  --   return
-  -- end
-
-  -- for k, cfg in pairs(require('dap').configurations.go) do
-  --   cfg['buildFlags'] = tags_cmd
-  --   require('dap').configurations.go[k] = cfg
-  -- end
-end
-
 function Go.configure_debug_maps(self)
   self.mapper:spacemap('db', [[<cmd>lua require('dap').toggle_breakpoint()<CR>]])
   self.mapper:spacemap('dc', [[<cmd>lua require('dap').continue()<CR>]])
