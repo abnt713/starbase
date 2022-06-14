@@ -20,7 +20,7 @@ function LanguageServerProtocol.new(
 end
 
 function LanguageServerProtocol.add_server(self, name, settings)
-  table.insert(self.lsp_servers, {name = name, settings = settings}) 
+  table.insert(self.lsp_servers, {name = name, settings = settings})
 end
 
 function LanguageServerProtocol.configure(self)

@@ -20,7 +20,7 @@ function Editor.configure(self)
     greeter:add_dependency('nvim-lua/plenary.nvim')
   end
 
-  self.plugin_manager:add_dependency('editorconfig/editorconfig-vim')
+  self.plugin_manager:add_dependency('gpanders/editorconfig.nvim')
   self.plugin_manager:add_dependency(
     'lukas-reineke/indent-blankline.nvim',
     self:setup_indentblankline()
