@@ -16,6 +16,7 @@ return {
   },
   diagnostics = {
     show_on_hover = false,
+    virtual_text = true,
   },
   stages = {
     go = {

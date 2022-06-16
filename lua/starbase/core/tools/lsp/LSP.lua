@@ -43,7 +43,9 @@ function LanguageServerProtocol.setup_lsp(self)
     end
 
     lspfuzzy.setup({})
-    self.nvim.diagnostic.config({virtual_text = false})
+
+    local virtual_text_enabled = self.starbase_settings:get('diagnostics.virtual_text')
+    self.nvim.diagnostic.config({virtual_text = virtual_text_enabled})
     self.nvim.o.updatetime = 500
 
     local show_on_hover = self.starbase_settings:get('diagnostics.show_on_hover')
