@@ -8,7 +8,7 @@ return {
       enabled = true,
     },
     startup = {
-      enabled = true,
+      enabled = false,
       theme = 'dashboard',
     },
     italics = {
