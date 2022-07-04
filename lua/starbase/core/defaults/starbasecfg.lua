@@ -19,7 +19,7 @@ return {
     }
   },
   lsp = {
-    autoinstall = false,
+    autoinstall = true,
   },
   stages = {
     cpp = {
