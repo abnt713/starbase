@@ -14,10 +14,13 @@ function Go.new(self, go_settings, linter, lsp, mapper, nvim, plugin_manager, st
 end
 
 function Go.configure(self)
+  -- If disabled by config, do nothing.
   if not self.starbase_settings:get('stages.go.enabled') then return end
 
+  -- Automatically add imports on save.
   self.plugin_manager:add_dependency('mattn/vim-goimports')
 
+  -- Add goimpl to quickly implement interfaces.
   self.plugin_manager:
     add_dependency('edolphin-ydf/goimpl.nvim', self:goimpl_setup()):
     add_dependency('nvim-lua/plenary.nvim'):
@@ -25,29 +28,32 @@ function Go.configure(self)
     add_dependency('nvim-telescope/telescope.nvim'):
     add_dependency('nvim-treesitter/nvim-treesitter')
 
+  self.mapper:leadermap('im', [[<cmd>lua require('telescope').extensions.goimpl.goimpl({})<CR>]])
 
+  -- Pass the project build tags to nvim-dap-go.
   local tag_list = self.go_settings:concat_buildtags(',')
   if tag_list ~= '' then
     self.nvim.g.nvim_dap_go_buildtags = tag_list
   end
 
-  self.plugin_manager:add_dependency('abnt713/nvim-dap-go', self:debug_setup()):
+  -- Add nvim-dap-go dependency.
+  self.plugin_manager:
+    add_dependency('abnt713/nvim-dap-go', self:debug_setup()):
     add_dependency('mfussenegger/nvim-dap')
 
-  self.lsp:add_server('gopls', self:gopls_settings())
-  self.linter:set_linters_for_ft('go', self.starbase_settings:get('stages.go.linters'))
-
-  -- TODO: Move to a Debug component.
   self:configure_debug_maps()
-  self.mapper:leadermap('im', [[<cmd>lua require('telescope').extensions.goimpl.goimpl({})<CR>]])
+
+  -- Set gopls as LSP server.
+  self.lsp:add_server('gopls', self:gopls_settings())
+
+  -- Set linters.
+  self.linter:set_linters_for_ft(
+    'go',
+    self.starbase_settings:get('stages.go.linters')
+  )
 end
 
 function Go.configure_debug_maps(self)
-  self.mapper:leadermap('b', [[<cmd>lua require('dap').toggle_breakpoint()<CR>]])
-  self.mapper:leadermap('<s-b>', [[<cmd>lua require('dap').set_breakpoint(vim.fn.input('Breakpoint condition: '))<CR>]])
-  self.mapper:leadermap('v', [[<cmd>lua require('dap').list_breakpoints(true)<CR>]])
-  self.mapper:leadermap('d', [[<cmd>lua require('dap').repl.toggle()<CR>]])
-  self.mapper:leadermap('c', [[<cmd>lua require('dap').continue()<CR>]])
   self.mapper:spacemap('dt', [[<cmd>lua require('dap-go').debug_test()<CR>]])
 end
 

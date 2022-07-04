@@ -55,8 +55,9 @@ function Provider.tools(self)
       self:theme(),
       self:statusline(),
 
-      -- Concepts from the editing world.
+      -- Concepts from the editing and coding world.
       self:autocomplete(),
+      self:debug(),
       self:filetree(),
       self:lsp(),
       self:treesitter(),
@@ -74,6 +75,15 @@ function Provider.post_hooks()
   return {}
 end
 
+-- debug provides the debug layer of the application.
+function Provider.debug(self)
+  return self:provide('debug', function ()
+    return require('starbase.core.tools.debug.Debug'):new(
+      self:mapper(),
+      self:plugin_manager()
+    )
+  end)
+end
 
 -- autocomplete provides the autocomplete layer of the application.
 function Provider.autocomplete(self)
