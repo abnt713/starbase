@@ -19,6 +19,9 @@ return {
     virtual_text = true,
   },
   stages = {
+    cpp = {
+      enabled = false,
+    },
     go = {
       enabled = false,
       linters = {'revive'},

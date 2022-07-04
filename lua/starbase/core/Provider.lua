@@ -25,6 +25,7 @@ function Provider.stages(self)
   return self:provide('layers', function ()
     return {
       self:editor_stage(),
+      self:cpp_stage(),
       self:go_stage(),
       require('starbase.core.stages.Lua'):new(
         self:linter(),
@@ -142,6 +143,15 @@ function Provider.editor_stage(self)
       self:nvim(),
       self:mapper(),
       self:plugin_manager()
+    )
+  end)
+end
+
+function Provider.cpp_stage(self)
+  return self:provide('cpp_stage', function ()
+    return require('starbase.core.stages.Cpp'):new(
+      self:lsp(),
+      self:starbase_settings()
     )
   end)
 end

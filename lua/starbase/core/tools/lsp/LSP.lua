@@ -61,6 +61,8 @@ function LanguageServerProtocol.setup_lsp(self)
     self.mapper:map('gi', '<cmd>lua vim.lsp.buf.implementation()<CR>', 'go to implementation')
     self.mapper:map('gs', '<cmd>lua vim.lsp.buf.signature_help()<CR>', 'display signature help')
     self.mapper:map('gl', '<cmd>lua vim.diagnostic.open_float(nil, {focus=false})<CR>', 'show linter diagnostics')
+    self.mapper:map('gn', '<cmd>lua vim.diagnostic.goto_next()<CR>', 'go to next diagnostic')
+    self.mapper:map('gp', '<cmd>lua vim.diagnostic.goto_prev()<CR>', 'go to next diagnostic')
     self.mapper:leadermap('rn', '<cmd>lua vim.lsp.buf.rename()<CR>', 'rename current symbol')
   end
 end
