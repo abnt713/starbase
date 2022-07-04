@@ -1,4 +1,8 @@
 return {
+  diagnostics = {
+    show_on_hover = false,
+    virtual_text = true,
+  },
   editor = {
     cursorline = {
       enabled = true,
@@ -14,9 +18,8 @@ return {
       enabled = true,
     }
   },
-  diagnostics = {
-    show_on_hover = false,
-    virtual_text = true,
+  lsp = {
+    autoinstall = false,
   },
   stages = {
     cpp = {
@@ -33,6 +36,9 @@ return {
     python = {
       enabled = false,
       linters = {'flake8'}
+    },
+    rust = {
+      enabled = false,
     }
   },
   project = {

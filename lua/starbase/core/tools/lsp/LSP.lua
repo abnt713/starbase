@@ -24,6 +24,13 @@ function LanguageServerProtocol.add_server(self, name, settings)
 end
 
 function LanguageServerProtocol.configure(self)
+  if self.starbase_settings:get('lsp.autoinstall') then
+    self.plugin_manager:add_dependency('williamboman/nvim-lsp-installer', function ()
+      local instdep = self.plugin_manager:require("nvim-lsp-installer")
+      if not instdep then return end
+      instdep.setup {}
+    end)
+  end
   self.plugin_manager:add_dependency('ojroques/nvim-lspfuzzy')
   self.plugin_manager:add_dependency('neovim/nvim-lspconfig', self:setup_lsp())
 end

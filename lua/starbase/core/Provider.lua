@@ -40,6 +40,7 @@ function Provider.stages(self)
         self:lsp(),
         self:starbase_settings()
       ),
+      self:rust_stage(),
       require('starbase.core.stages.Svelte'):new(
         self:plugin_manager()
       )
@@ -181,6 +182,14 @@ function Provider.go_stage(self)
   end)
 end
 
+function Provider.rust_stage(self)
+  return self:provide('rust_stage', function ()
+    return require('starbase.core.stages.Rust'):new(
+      self:lsp(),
+      self:starbase_settings()
+    )
+  end)
+end
 
 -- linter provides the linter component.
 function Provider.linter(self)

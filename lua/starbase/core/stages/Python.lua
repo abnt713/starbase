@@ -16,7 +16,7 @@ function Python.configure(self)
   self.linter:set_linters_for_ft('python', self.starbase_settings:get('stages.python.linters'))
 end
 
-function Python.pyright_settings(self)
+function Python.pyright_settings()
   return {}
 end
 

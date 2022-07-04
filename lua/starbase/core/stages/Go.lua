@@ -81,8 +81,8 @@ function Go.gopls_settings(self)
     settings = {
       gopls = {
         buildFlags = {},
-        env = nil,
-      }
+        env = {},
+      },
     },
   }
 
