@@ -77,21 +77,18 @@ end
 
 function Go.gopls_settings(self)
   local tags_cmd = self:get_tags_command()
-  local gopls_settings = {
+  if tags_cmd ~= '' then
+    return {}
+  end
+
+  return {
     settings = {
       gopls = {
-        buildFlags = {},
-        env = {},
+        buildFlags = {tags_cmd},
+        env = {GOFLAGS = tags_cmd},
       },
     },
   }
-
-  if tags_cmd ~= '' then
-    gopls_settings.settings.gopls['buildFlags'] = {tags_cmd}
-    gopls_settings.settings.gopls['env'] = {GOFLAGS = tags_cmd}
-  end
-
-  return gopls_settings
 end
 
 function Go.get_tags_command(self)
