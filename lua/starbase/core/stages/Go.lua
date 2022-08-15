@@ -77,7 +77,7 @@ end
 
 function Go.gopls_settings(self)
   local tags_cmd = self:get_tags_command()
-  if tags_cmd ~= '' then
+  if tags_cmd == '' then
     return {}
   end
 
