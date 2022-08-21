@@ -10,4 +10,4 @@ class Fugitive
       \keys('gp')\cmd('GitGutterPrevHunk')\apply!
       \keys('gn')\cmd('GitGutterNextHunk')\apply!
 
-return Fugitive
+Fugitive

@@ -1,4 +1,7 @@
-() ->
+(opts, proj) ->
+  cfg = require('starbase.config.Config') opts
+  pcfg = require('starbase.config.Config') proj
+
   nvim = vim
   pm = require('starbase.packer.Packer') nvim
   maps = require('starbase.maps.Maps') nvim
@@ -23,6 +26,7 @@
   }
 
   for _, step in pairs steps
-    step\apply nvim, pm, maps
+    if step.id == nil or cfg\get('steps.' .. step\id! .. '.enabled', true)
+      step\apply nvim, pm, maps
 
   pm\apply!
