@@ -18,6 +18,7 @@
     require('starbase.tech.Debug')!,
     require('starbase.tech.Fugitive')!,
     require('starbase.tech.Moonscript')!,
+    require('starbase.tech.Go')(pcfg, lsp),
 
     require('starbase.theme.Palenight')!,
 
