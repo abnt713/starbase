@@ -9,6 +9,10 @@
     require('starbase.editor.Cmp')(lsp),
     require('starbase.editor.Treesitter')!,
     require('starbase.editor.Telescope')!,
+    require('starbase.editor.NERDTree')!,
+
+    require('starbase.tech.Fugitive')!,
+    require('starbase.tech.Moonscript')!,
 
     require('starbase.theme.Palenight')!,
 

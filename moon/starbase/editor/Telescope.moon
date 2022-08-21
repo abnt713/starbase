@@ -1,6 +1,6 @@
 class Telescope
   apply: (nvim, plugins, maps) =>
-    with plugins\require 'nvim-telescope'
+    with plugins\require 'nvim-telescope/telescope.nvim'
       \post_hook(@_setup_telescope maps)
       \require 'nvim-lua/popup.nvim'
       \require 'nvim-lua/plenary.nvim'
