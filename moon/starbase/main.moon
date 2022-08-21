@@ -8,6 +8,8 @@
     require('starbase.editor.Editor')!,
     require('starbase.editor.Cmp')(lsp),
     require('starbase.editor.Treesitter')!,
+    require('starbase.editor.Telescope')!,
+
     require('starbase.theme.Palenight')!,
 
     lsp,
