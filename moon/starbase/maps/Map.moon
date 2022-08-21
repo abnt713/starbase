@@ -1,24 +1,39 @@
 class Map
   new: (nvim) =>
     @nvim = nvim
-    @mode = 'n'
-    @options = {noremap: true}
+    @_mode = 'n'
+    @_options = {noremap: true}
 
   leader: =>
-    @prefix = 'leader'
+    @_prefix = 'leader'
+    @
 
   space: =>
-    @prefix = 'space'
+    @_prefix = 'space'
+    @
 
   mode: (mode) =>
-    @mode = mode
+    @_mode = mode
+    @
 
-  key_sequence: (ks) =>
-    @ks = ks
+  keys: (ks) =>
+    @_ks = ks
+    @
 
   cmd: (cmd) =>
-    @cmd = cmd
+    @_map = '<cmd>' .. cmd .. '<CR>'
+    @
+
+  maps_to: (map) =>
+    @_map = map
+    @
 
   apply: =>
-    if not @ks return
-    @nvim.api.nvim_set_keymap @mode, @ks, @cmd, @options
+    if not @_ks return
+    if not @_map return
+
+    ks = @_ks
+    if @_prefix then ks = '<' .. @_prefix .. '>' .. ks
+    @nvim.api.nvim_set_keymap @_mode, ks, @_map, @_options
+
+Map
