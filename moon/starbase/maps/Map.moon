@@ -24,6 +24,10 @@ class Map
     @_map = '<cmd>' .. cmd .. '<CR>'
     @
 
+  lua: (cmd) =>
+    @cmd 'lua ' .. cmd
+    @
+
   maps_to: (map) =>
     @_map = map
     @
