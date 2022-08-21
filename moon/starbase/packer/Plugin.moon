@@ -16,6 +16,9 @@ class Plugin
 
   tag: (tag) =>
     @opts['tag'] = tag
+
+  run: (run) =>
+    @opts['run'] = run
   
   run: (cmd) =>
     @opts['run'] = cmd

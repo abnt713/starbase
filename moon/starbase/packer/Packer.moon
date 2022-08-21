@@ -2,7 +2,7 @@ class Packer
   new: (nvim) =>
     @nvim = nvim
     @plugins = {}
-    @\require 'wbthomason/packer.nvim'
+    @require 'wbthomason/packer.nvim'
 
   require: (name) =>
     dep = require('starbase.packer.Plugin') @nvim, name
