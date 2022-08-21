@@ -17,7 +17,7 @@ class Go
       \require 'nvim-telescope/telescope.nvim'
       \require 'nvim-treesitter/nvim-treesitter'
     
-    tags = @tags!
+    tags = @get_tags!
     if tags != ''
       nvim.g.nvim_dap_go_buildtags = tags
 
@@ -29,12 +29,12 @@ class Go
     with maps\add!\space!
       \keys('dt')\lua([[require('dap-go').debug_test()]])\apply!
 
-  tags: =>
+  get_tags: =>
     tags = @proj\get('go.tags', {})
     table.concat tags, ','
 
   gopls_settings: =>
-    tags = @tags!
+    tags = @get_tags!
     if tags == '' return {}
 
     tags_flag = '-tags=' .. tags
