@@ -1,7 +1,8 @@
 class Go
-  new: (proj, lsp) =>
+  new: (proj, lsp, linter) =>
     @proj = proj
     @lsp = lsp
+    @linter = linter
 
   apply: (nvim, plugins, maps) =>
     plugins\require 'mattn/vim-goimports'
@@ -22,6 +23,7 @@ class Go
       nvim.g.nvim_dap_go_buildtags = tags
 
     @lsp\add_server 'gopls', @gopls_settings!
+    @linter\set 'go', {'revive'}
 
     with maps\add!\leader!
       \keys('im')\lua([[require('telescope').extensions.goimpl.goimpl({})]])\apply!
