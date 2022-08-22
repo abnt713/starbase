@@ -1,4 +1,7 @@
 class NERDTree
+  id: =>
+    'nerdtree'
+
   apply: (nvim, plugins, maps) =>
     with plugins\require 'preservim/nerdtree'
       \require 'ryanoasis/vim-devicons'

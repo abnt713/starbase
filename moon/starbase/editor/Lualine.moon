@@ -1,4 +1,7 @@
 class Lualine
+  id: =>
+    'lualine'
+
   theme: (target, theme) =>
     if target != 'lualine' then return
     @_theme = theme

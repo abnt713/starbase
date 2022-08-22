@@ -1,4 +1,7 @@
 class Fugitive
+  id: =>
+    'fugitive'
+
   apply: (nvim, plugins, maps) =>
     plugins\require 'tpope/vim-fugitive'
     plugins\require 'airblade/vim-gitgutter'

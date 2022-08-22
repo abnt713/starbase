@@ -4,6 +4,9 @@ class Go
     @lsp = lsp
     @linter = linter
 
+  id: =>
+    'go'
+
   apply: (nvim, plugins, maps) =>
     plugins\require 'mattn/vim-goimports'
 

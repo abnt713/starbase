@@ -1,4 +1,7 @@
 class Editor
+  id: =>
+    'editor'
+
   apply: (nvim, plugins, maps) =>
     @_nvimcfg nvim
 

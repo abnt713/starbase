@@ -1,4 +1,7 @@
 class Debug
+  id: =>
+    'debug'
+
   apply: (nvim, plugins, maps) =>
     plugins\require 'mfussenegger/nvim-dap'
 

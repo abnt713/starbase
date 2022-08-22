@@ -2,6 +2,9 @@ class LSP
   new: =>
     @servers = {}
 
+  id: =>
+    'lsp'
+
   add_server: (name, settings) =>
     table.insert @servers, {name: name, settings: settings}
 

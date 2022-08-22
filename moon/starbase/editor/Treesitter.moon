@@ -1,4 +1,7 @@
 class Treesitter
+  id: =>
+    'treesitter'
+
   apply: (nvim, plugins, maps) =>
     with plugins\require 'nvim-treesitter/nvim-treesitter'
       \post_hook(@_setup_treesitter plugins)

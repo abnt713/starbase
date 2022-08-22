@@ -1,4 +1,7 @@
 class Telescope
+  id: =>
+    'telescope'
+
   apply: (nvim, plugins, maps) =>
     with plugins\require 'nvim-telescope/telescope.nvim'
       \post_hook(@_setup_telescope maps)

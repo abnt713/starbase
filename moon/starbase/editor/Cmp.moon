@@ -2,6 +2,9 @@ class Cmp
   new: (lsp) =>
     @lsp = lsp
 
+  id: =>
+    'nvim-cmp'
+
   apply: (nvim, plugins, maps) =>
     nvim.o.completeopt = 'menu,menuone,noselect'
 
