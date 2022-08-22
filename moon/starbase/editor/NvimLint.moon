@@ -1,6 +1,9 @@
 class NvimLint
   new: =>
     @lintersft = {}
+  
+  id: =>
+    'nvim-lint'
 
   set: (ft, linters) =>
     @lintersft[ft] = linters
