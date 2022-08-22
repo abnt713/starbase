@@ -8,6 +8,7 @@
 
   lsp = require('starbase.editor.LSP')!
   line = require('starbase.editor.Lualine')!
+  lint = require('starbase.editor.NvimLint')!
   steps = {
     require('starbase.editor.Editor')!,
     require('starbase.editor.Cmp')(lsp),
@@ -24,6 +25,7 @@
 
     lsp,
     line,
+    lint,
   }
 
   for _, step in pairs steps
