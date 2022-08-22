@@ -5,6 +5,7 @@ class Config
 
   get: (key, fallback) =>
     if @values[key] != nil then return @values[key]
+    fallback
 
   value: (key) =>
     @values[key]

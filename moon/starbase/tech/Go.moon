@@ -16,7 +16,7 @@ class Go
       \require 'nvim-lua/popup.nvim'
       \require 'nvim-telescope/telescope.nvim'
       \require 'nvim-treesitter/nvim-treesitter'
-    
+
     tags = @get_tags!
     if tags != ''
       nvim.g.nvim_dap_go_buildtags = tags
