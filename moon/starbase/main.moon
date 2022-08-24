@@ -8,7 +8,7 @@
 
   lsp = require('starbase.editor.LSP')!
   line = require('starbase.editor.Lualine')!
-  lint = require('starbase.editor.NvimLint')!
+  lint = require('starbase.editor.NvimLint')(cfg\get 'linter.use_defaults', false)
   steps = {
     require('starbase.editor.Editor')!,
     require('starbase.editor.Cmp')(lsp),

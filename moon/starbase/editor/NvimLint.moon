@@ -1,5 +1,6 @@
 class NvimLint
-  new: =>
+  new: (usedefaults) =>
+    @usedefaults = usedefaults
     @lintersft = {}
   
   id: =>
@@ -15,6 +16,7 @@ class NvimLint
   _setup_nvim_lint: (nvim) =>
     ->
       lint = require 'lint'
+      if not @usedefaults then lint.linters_by_ft = {}
       for ft, linters in pairs @lintersft
         lint.linters_by_ft[ft] = linters
       
