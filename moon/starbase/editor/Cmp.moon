@@ -18,6 +18,9 @@ class Cmp
     with plugins\require 'hrsh7th/nvim-cmp'
       \post_hook(@_setup_cmp!)
 
+    dp = require 'cmp_nvim_lsp'
+    @lsp\set_capabilities(dp.update_capabilities nvim.lsp.protocol.make_client_capabilities!)
+
   _setup_cmp: =>
     ->
       with cmp = require('cmp')
@@ -44,6 +47,7 @@ class Cmp
           },
           sources: cmp.config.sources {
             { name: 'nvim_lsp' },
+            { name: 'luasnip' },
             { name: 'buffer' },
             { name: 'path' },
           }

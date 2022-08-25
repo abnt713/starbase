@@ -20,7 +20,7 @@ class LSP
     ->
       lspcfg = require 'lspconfig'
       for _, s in pairs @servers
-        if @capabilities then s.settings['capabilities'] = capabilities
+        if @capabilities then s.settings['capabilities'] = @capabilities
         lspcfg[s.name].setup s.settings
 
       require('lspfuzzy').setup {}
