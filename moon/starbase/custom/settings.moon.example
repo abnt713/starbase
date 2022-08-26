@@ -1,0 +1,4 @@
+-- Customize to your needs
+{
+  'steps.editor.enabled': true
+}

@@ -1,0 +1,5 @@
+class Step
+  apply: (nvim, plugins, maps) =>
+    -- Customize to your needs
+
+Step

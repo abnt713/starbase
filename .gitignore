@@ -1,6 +1,6 @@
 /starbase
 /plugin/*
-/lua/custom/*
 /lua/starbase/*
+/moon/starbase/custom/*.moon
 
 !.gitkeep
