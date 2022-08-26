@@ -16,8 +16,8 @@ class Map
     @_mode = mode
     @
 
-  keys: (ks) =>
-    @_ks = ks
+  keys: (keys) =>
+    @_keys = keys
     @
 
   cmd: (cmd) =>
@@ -36,8 +36,8 @@ class Map
     if not @_ks return
     if not @_map return
 
-    ks = @_ks
-    if @_prefix then ks = '<' .. @_prefix .. '>' .. ks
-    @nvim.api.nvim_set_keymap @_mode, ks, @_map, @_options
+    keys = @_keys
+    if @_prefix then keys = '<' .. @_prefix .. '>' .. keys
+    @nvim.api.nvim_set_keymap @_mode, keys, @_map, @_options
 
 Map
