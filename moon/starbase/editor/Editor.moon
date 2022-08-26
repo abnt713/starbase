@@ -13,7 +13,7 @@ class Editor
     with plugins\require 'lukas-reineke/indent-blankline.nvim'
       \post_hook(@_setup_indentblankline nvim)
 
-    @_mapscfg maps
+    @_mapscfg nvim, maps
     
   _nvimcfg: (nvim) =>
     if nvim.fn.exists '+termguicolors'
@@ -41,20 +41,19 @@ class Editor
 
     nvim.g.netrw_banner = 0
 
-  _mapscfg: (maps) =>
+  _mapscfg: (nvim, maps) =>
     maps\add!\mode('i')\keys('<C-c>')\maps_to('<ESC>')\apply!
 
     with maps\add!\space!
       \keys('w')\cmd('bd')\apply!
       \keys('fe')\cmd('Explore')\apply!
       \keys('lt')\cmd('set norelativenumber!')\apply!
-
       \keys('tt')\cmd('tabnew')\apply!
       \keys('tj')\cmd('tabn')\apply!
       \keys('tk')\cmd('tabp')\apply!
       \keys('tw')\cmd('tabclose')\apply!
-
       \keys('cc')\cmd('ColorToggle')\apply!
+      \keys('fr')\fn('editor-file-reference', @_file_reference nvim)\apply!
 
   _setup_indentblankline: (nvim) =>
     ->
@@ -65,5 +64,11 @@ class Editor
         char: '¦',
         buftype_exclude: {'terminal'}
       }
+
+  _file_reference: (nvim) =>
+    ->
+      fileref = nvim.fn.expand('%') .. ':' .. nvim.fn.line('.')
+      nvim.fn.setreg '+', fileref
+      print fileref, 'copied to clipboard'
 
 Editor

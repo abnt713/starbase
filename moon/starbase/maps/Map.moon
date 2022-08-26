@@ -1,6 +1,8 @@
 class Map
-  new: (nvim) =>
+  new: (nvim, _funcs) =>
     @nvim = nvim
+    @_funcs = _funcs
+
     @_mode = 'n'
     @_options = {noremap: true}
 
@@ -21,19 +23,21 @@ class Map
     @
 
   cmd: (cmd) =>
-    @_map = '<cmd>' .. cmd .. '<CR>'
-    @
+    @maps_to '<cmd>' .. cmd .. '<CR>'
+
+  fn: (name, fn) =>
+    @_funcs[name] = fn
+    @lua "_mapped_functions['" .. name .. "']()"
 
   lua: (cmd) =>
     @cmd 'lua ' .. cmd
-    @
 
   maps_to: (map) =>
     @_map = map
     @
 
   apply: =>
-    if not @_ks return
+    if not @_keys return
     if not @_map return
 
     keys = @_keys
