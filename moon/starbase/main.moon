@@ -20,6 +20,7 @@
     require('starbase.tech.Fugitive')!,
     require('starbase.tech.Moonscript')!,
     require('starbase.tech.Go')(pcfg, lsp, lint),
+    require('starbase.tech.Svelte')!,
 
     require('starbase.theme.Palenight')!,
 
