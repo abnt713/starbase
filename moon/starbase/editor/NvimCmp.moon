@@ -16,14 +16,14 @@ class Cmp
     plugins\require 'saadparwaiz1/cmp_luasnip'
 
     with plugins\require 'hrsh7th/nvim-cmp'
-      \post_hook(@_setup_cmp!)
+      \post_hook(@_setup_cmp nvim)
 
-    dp = require 'cmp_nvim_lsp'
-    @lsp\set_capabilities(dp.update_capabilities nvim.lsp.protocol.make_client_capabilities!)
 
-  _setup_cmp: =>
+  _setup_cmp: (nvim) =>
     ->
-      with cmp = require('cmp')
+      dp = require 'cmp_nvim_lsp'
+      @lsp\set_capabilities(dp.update_capabilities nvim.lsp.protocol.make_client_capabilities!)
+      with cmp = require 'cmp'
         .setup {
           snippet: {
             expand: (args) ->

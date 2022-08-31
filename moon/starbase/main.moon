@@ -15,7 +15,7 @@
   lint = require('starbase.editor.NvimLint')(cfg\get 'linter.use_defaults', false)
   steps = {
     require('starbase.editor.Editor')!,
-    require('starbase.editor.Cmp')(lsp),
+    require('starbase.editor.NvimCmp')(lsp),
     require('starbase.editor.Treesitter')!,
     require('starbase.editor.Telescope')!,
     require('starbase.editor.NERDTree')!,
