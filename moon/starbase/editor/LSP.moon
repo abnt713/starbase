@@ -37,7 +37,7 @@ class LSP
       \keys('gr')\cmd('lua vim.lsp.buf.references()')\apply!
       \keys('gi')\cmd('lua vim.lsp.buf.implementation()')\apply!
       \keys('gs')\cmd('lua vim.lsp.buf.signature_help()')\apply!
-      \keys('gl')\cmd('lua vim.diagnistic.open_float(nil, {focus=false})')\apply!
+      \keys('gl')\cmd('lua vim.diagnostic.open_float(nil, {focus=false})')\apply!
       \keys('gn')\cmd('vim.diagnostic.goto_next()')\apply!
       \keys('gp')\cmd('vim.diagnostic.goto_prev()')\apply!
 
