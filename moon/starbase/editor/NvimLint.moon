@@ -21,9 +21,9 @@ class NvimLint
         lint.linters_by_ft[ft] = linters
       
       nvim.api.nvim_create_autocmd { 'BufWritePost' }, {
-        callback: (->
+        callback: ->
           require('lint').try_lint!
-        ),
+        ,
       }
 
 NvimLint

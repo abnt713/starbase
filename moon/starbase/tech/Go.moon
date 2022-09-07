@@ -8,6 +8,9 @@ class Go
     'go'
 
   apply: (nvim, plugins, maps) =>
+    nvim.g.goimports_show_loclist = 0
+    nvim.g.goimports_simplify_cmd = 'gofumpt'
+    nvim.g.goimports_simplify = 1
     plugins\require 'mattn/vim-goimports'
 
     with plugins\require 'abnt713/nvim-dap-go'
@@ -47,7 +50,10 @@ class Go
       settings: {
         gopls: {
           buildFlags: {tags_flag},
-          env: {GOFLAGS: tags_flag}
+          env: {GOFLAGS: tags_flag},
+          analyses: {
+            unusedparams: true,
+          }
         }
       }
     }
