@@ -18,12 +18,13 @@
     require('starbase.editor.NvimCmp')(lsp),
     require('starbase.editor.Treesitter')!,
     require('starbase.editor.Telescope')!,
-    require('starbase.editor.NERDTree')!,
+    require('starbase.editor.NvimTree')!,
 
     require('starbase.tech.Debug')!,
     require('starbase.tech.Fugitive')!,
     require('starbase.tech.Moonscript')!,
     require('starbase.tech.Go')(pcfg, lsp, lint),
+    require('starbase.tech.Elm')(lsp),
     require('starbase.tech.Python')(lsp, lint),
     require('starbase.tech.Svelte')(lsp),
 

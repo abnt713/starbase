@@ -40,6 +40,7 @@ class Editor
     nvim.bo.softtabstop = indent_size
 
     nvim.g.netrw_banner = 0
+    nvim.cmd 'au BufRead,BufNewFile *.md,*.txt setlocal textwidth=80'
 
   _mapscfg: (nvim, maps) =>
     maps\add!\mode('i')\keys('<C-c>')\maps_to('<ESC>')\apply!
