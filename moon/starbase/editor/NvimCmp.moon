@@ -22,7 +22,7 @@ class Cmp
   _setup_cmp: (nvim) =>
     ->
       dp = require 'cmp_nvim_lsp'
-      @lsp\set_capabilities(dp.update_capabilities nvim.lsp.protocol.make_client_capabilities!)
+      @lsp\set_capabilities(dp.default_capabilities())
       with cmp = require 'cmp'
         .setup {
           snippet: {
