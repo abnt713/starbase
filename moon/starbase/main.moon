@@ -26,6 +26,7 @@
     require('starbase.tech.Go')(pcfg, lsp, lint),
     require('starbase.tech.Elm')(lsp),
     require('starbase.tech.Python')(lsp, lint),
+    require('starbase.tech.Cpp')(lsp),
     require('starbase.tech.Svelte')(lsp),
 
     require('starbase.theme.Palenight')!,
