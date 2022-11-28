@@ -7,5 +7,3 @@ class Elm
 
   apply: =>
     @lsp\add_server 'elmls', {}
-
-Elm

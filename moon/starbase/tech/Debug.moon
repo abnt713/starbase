@@ -11,5 +11,3 @@ class Debug
       \keys('v')\lua([[require('dap').list_breakpoints(true)]])\apply!
       \keys('d')\lua([[require('dap').repl.toggle()]])\apply!
       \keys('c')\lua([[require('dap').continue()]])\apply!
-
-Debug
